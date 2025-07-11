@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "name": "Fender Stratocaster Sample Pack",
+    "power": "Rock, Blues, Funk",
+    "age": 2024,
+    "city": "Los Angeles"
+  },
+  {
+    "id": 2,
+    "name": "DJ Khaled",
+    "power": "Hype Man, Producer",
+    "age": 48,
+    "city": "Miami"
+  },
+  {
+    "id": 3,
+    "name": "Taylor Swift",
+    "power": "Singer-Songwriter, Pop Icon",
+    "age": 34,
+    "city": "Nashville"
+  },
+  {
+    "id": 4,
+    "name": "Dr. Dre",
+    "power": "Hip-Hop Producer, Rapper",
+    "age": 58,
+    "city": "Los Angeles"
+  },
+  {
+    "id": 5,
+    "name": "fari",
+    "power": "programar",
+    "age": 19,
+    "city": "uman"
+  }
+]

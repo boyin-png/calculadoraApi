@@ -1,0 +1,26 @@
+[
+  {
+    "id": 101,
+    "name": "Krypto",
+    "animal": "Super-Perro",
+    "superpower": "Vuelo y Super-ladrido",
+    "status": "vivo",
+    "ownerId": null
+  },
+  {
+    "id": 102,
+    "name": "Ace",
+    "animal": "Murci-Sabueso",
+    "superpower": "Detective experto",
+    "status": "vivo",
+    "ownerId": null
+  },
+  {
+    "id": 103,
+    "status": "disponible",
+    "ownerId": null,
+    "name": "covis",
+    "animal": "perro",
+    "superpower": "chismosear"
+  }
+]
