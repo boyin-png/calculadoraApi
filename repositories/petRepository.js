@@ -1,12 +1,9 @@
 import fs from 'fs-extra';
-import Pet from '../models/petModel.js';
-
 const filePath = './database/pets.json';
 
 export async function getPets() {
     try {
-        const data = await fs.readJson(filePath);
-        return data.map(pet => new Pet(pet));
+        return await fs.readJson(filePath);
     } catch (error) {
         if (error.code === 'ENOENT') return [];
         throw error;
