@@ -1,57 +1,38 @@
-import express from "express";
-import * as petService from "../services/petServices.js";
+import express from 'express';
+import { protect } from '../middleware/authMiddleware.js';
+import * as heroService from '../services/heroServices.js';
 
 const router = express.Router();
 
-router.post("/heroes/:heroId/adopt/:petId", async (req, res) => {
+// Todas las rutas usan "protect". El ID del usuario se obtiene de req.user._id
+router.get('/heroes', protect, async (req, res) => {
     try {
-        const { heroId, petId } = req.params;
-        const updatedHero = await petService.adoptPet(heroId, petId);
+        const heroes = await heroService.getAllHeroesForUser(req.user._id);
+        res.json(heroes);
+    } catch (error) { res.status(500).json({ message: "Error al obtener héroes" }); }
+});
+
+router.post('/heroes', protect, async (req, res) => {
+    try {
+        const hero = await heroService.addHeroForUser(req.body, req.user._id);
+        res.status(201).json(hero);
+    } catch (error) { res.status(400).json({ message: error.message }); }
+});
+
+router.put('/heroes/:id', protect, async (req, res) => {
+    try {
+        const updatedHero = await heroService.updateHeroForUser(req.params.id, req.body, req.user._id);
+        if (!updatedHero) return res.status(404).json({ message: "Héroe no encontrado o no te pertenece" });
         res.json(updatedHero);
-    } catch (error) {
-        // Usamos status 400 para errores de lógica de negocio (ej. ya tiene dueño)
-        res.status(400).json({ error: error.message });
-    }
+    } catch (error) { res.status(400).json({ message: error.message }); }
 });
 
-// GET /api/pets
-router.get("/pets", async (req, res) => {
+router.delete('/heroes/:id', protect, async (req, res) => {
     try {
-        const pets = await petService.getAllPets();
-        res.json(pets);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// POST /api/pets
-router.post("/pets", async (req, res) => {
-    try {
-        const newPet = await petService.addPet(req.body);
-        res.status(201).json(newPet);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
-
-// PUT /api/pets/:id
-router.put("/pets/:id", async (req, res) => {
-    try {
-        const updatedPet = await petService.updatePet(req.params.id, req.body);
-        res.json(updatedPet);
-    } catch (error) {
-        res.status(404).json({ error: error.message });
-    }
-});
-
-// DELETE /api/pets/:id
-router.delete("/pets/:id", async (req, res) => {
-    try {
-        await petService.deletePet(req.params.id);
-        res.status(200).json({ message: "Mascota eliminada correctamente" });
-    } catch (error) {
-        res.status(404).json({ error: error.message });
-    }
+        const result = await heroService.deleteHeroForUser(req.params.id, req.user._id);
+        if (!result) return res.status(404).json({ message: "Héroe no encontrado o no te pertenece" });
+        res.json({ message: 'Héroe y sus mascotas han sido eliminados' });
+    } catch (error) { res.status(500).json({ message: error.message }); }
 });
 
 export default router;

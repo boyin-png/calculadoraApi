@@ -4,23 +4,33 @@
     "name": "Krypto",
     "animal": "Super-Perro",
     "superpower": "Vuelo y Super-ladrido",
-    "status": "vivo",
-    "ownerId": null
+    "ownerId": 1,
+    "hp": 10,
+    "maxHp": 10,
+    "health_status": "saludable",
+    "mood": "aburrido",
+    "fashion_status": "quiere-estar-a-la-moda",
+    "accessories": {
+      "sombrero": null,
+      "lentes": null,
+      "ropa": null
+    }
   },
   {
     "id": 102,
-    "name": "Ace",
-    "animal": "Murci-Sabueso",
-    "superpower": "Detective experto",
-    "status": "vivo",
-    "ownerId": null
-  },
-  {
-    "id": 103,
-    "status": "disponible",
-    "ownerId": null,
     "name": "covis",
     "animal": "perro",
-    "superpower": "chismosear"
+    "superpower": "chismosear",
+    "ownerId": 2,
+    "hp": 0,
+    "maxHp": 12,
+    "health_status": "muerto",
+    "mood": "entretenido",
+    "fashion_status": "en-la-moda",
+    "accessories": {
+      "sombrero": "Sombrero de Mago",
+      "lentes": null,
+      "ropa": null
+    }
   }
 ]

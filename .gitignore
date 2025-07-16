@@ -1,5 +1,6 @@
 node_modules/
 
+.env/
 # Ignorar logs de NPM
 npm-debug.log*
 package-lock.json/

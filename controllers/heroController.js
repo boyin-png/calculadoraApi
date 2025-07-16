@@ -1,60 +1,38 @@
-import express from "express";
-import { check, validationResult } from 'express-validator';
-// Importamos todas las funciones del servicio bajo el alias "heroService"
-import * as heroService from "../services/heroServices.js";
+import express from 'express';
+import { protect } from '../middleware/authMiddleware.js';
+import * as heroService from '../services/heroServices.js';
 
 const router = express.Router();
 
-// GET /api/heroes
-router.get("/heroes", async (req, res) => {
+// Todas las rutas usan "protect". El ID del usuario se obtiene de req.user._id
+router.get('/heroes', protect, async (req, res) => {
     try {
-        const heroes = await heroService.getAllHeroes();
+        const heroes = await heroService.getAllHeroesForUser(req.user._id);
         res.json(heroes);
-    } catch (error) {
-        res.status(500).json({ error: "Error interno del servidor" });
-    }
+    } catch (error) { res.status(500).json({ message: "Error al obtener héroes" }); }
 });
 
-// POST /api/heroes
-router.post("/heroes",
-    [
-        check('name').not().isEmpty(),
-        check('power').not().isEmpty(),
-        check('age').isNumeric(),
-        check('city').not().isEmpty()
-    ], 
-    async (req, res) => {
-        const errors = validationResult(req);
-        if(!errors.isEmpty()){
-            return res.status(400).json({ errors: errors.array() });
-        }
-        try {
-            const addedHero = await heroService.addHero(req.body);
-            res.status(201).json(addedHero);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-});
-
-// PUT /api/heroes/:id
-router.put("/heroes/:id", async (req, res) => {
+router.post('/heroes', protect, async (req, res) => {
     try {
-        const updatedHero = await heroService.updateHero(req.params.id, req.body);
+        const hero = await heroService.addHeroForUser(req.body, req.user._id);
+        res.status(201).json(hero);
+    } catch (error) { res.status(400).json({ message: error.message }); }
+});
+
+router.put('/heroes/:id', protect, async (req, res) => {
+    try {
+        const updatedHero = await heroService.updateHeroForUser(req.params.id, req.body, req.user._id);
+        if (!updatedHero) return res.status(404).json({ message: "Héroe no encontrado o no te pertenece" });
         res.json(updatedHero);
-    } catch (error) {
-        res.status(404).json({ error: error.message });
-    }
+    } catch (error) { res.status(400).json({ message: error.message }); }
 });
 
-// DELETE /api/heroes/:id
-router.delete('/heroes/:id', async (req, res) => {
+router.delete('/heroes/:id', protect, async (req, res) => {
     try {
-        await heroService.deleteHero(req.params.id);
-        res.status(200).json({ message: 'Héroe eliminado' });
-    } catch (error) {
-        res.status(404).json({ error: error.message });
-    }
+        const result = await heroService.deleteHeroForUser(req.params.id, req.user._id);
+        if (!result) return res.status(404).json({ message: "Héroe no encontrado o no te pertenece" });
+        res.json({ message: 'Héroe y sus mascotas han sido eliminados' });
+    } catch (error) { res.status(500).json({ message: error.message }); }
 });
-
 
 export default router;

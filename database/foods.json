@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Croquetas Basicas",
+    "hpRestore": 3,
+    "cost": 5
+  },
+  {
+    "name": "Filete Jugoso",
+    "hpRestore": 7,
+    "cost": 15
+  },
+  {
+    "name": "Pocion de Vida Menor",
+    "hpRestore": 10,
+    "cost": 25
+  }
+]

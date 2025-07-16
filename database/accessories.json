@@ -1,0 +1,5 @@
+[
+  { "name": "Sombrero de Mago", "type": "sombrero", "cost": 25, "hpBonus": 2 },
+  { "name": "Lentes de Sol Cool", "type": "lentes", "cost": 15, "hpBonus": 2 },
+  { "name": "Capa de Héroe", "type": "ropa", "cost": 40, "hpBonus": 2 }
+]
