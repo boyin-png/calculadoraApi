@@ -27,8 +27,7 @@ const swaggerDocument = {
     version: '2.0.0',
     description: 'Versión final de la API con sistema de usuarios, mascotas y juego interactivo.',
   },
-  servers: [{ url: `http://localhost:${port}` }],
-  tags: [
+    tags: [
     { name: 'Auth', description: 'Operaciones de Registro y Login de Usuarios.' },
     { name: 'Heroes', description: 'Operaciones CRUD para Héroes (requiere autenticación).' },
     { name: 'Mascotas', description: 'Operaciones CRUD para Mascotas (requiere autenticación).' },
