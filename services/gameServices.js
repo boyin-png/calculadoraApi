@@ -1,38 +1,59 @@
-import * as petRepository from '../repositories/petRepository.js';
-import * as heroRepository from '../repositories/heroRepository.js';
+import Pet from '../models/petModel.js';
+import Hero from '../models/heroModel.js';
 import fs from 'fs-extra';
 
-let selectedPetId = null;
+// La "sesión" ahora solo guarda el ID de la mascota seleccionada por un usuario.
+// En una app real, esto sería una estructura más compleja, pero para esto funciona.
+const userSessions = {}; // Ejemplo: { "userId123": "petId456" }
 
-async function getFullState() {
+// --- FUNCIÓN CENTRAL PARA OBTENER ESTADO ---
+async function getState(userId) {
+    const selectedPetId = userSessions[userId];
     if (!selectedPetId) throw new Error('Debes seleccionar una mascota primero.');
-    const allPets = await petRepository.getPets();
-    const pet = allPets.find(p => p.id === selectedPetId);
+
+    const pet = await Pet.findOne({ _id: selectedPetId, user: userId });
     if (!pet) {
-        selectedPetId = null;
-        throw new Error('La mascota seleccionada ya no existe.');
+        delete userSessions[userId]; // Limpiamos la sesión si la mascota ya no existe
+        throw new Error('La mascota seleccionada ya no existe o no te pertenece.');
     }
-    const allHeroes = await heroRepository.getHeroes();
-    const owner = pet.ownerId ? allHeroes.find(h => h.id === pet.ownerId) : null;
-    return { pet, allPets, owner, allHeroes };
+    
+    const owner = pet.ownerId ? await Hero.findOne({ _id: pet.ownerId, user: userId }) : null;
+    return { pet, owner };
 }
 
-export async function selectPet(petId) {
-    const pets = await petRepository.getPets();
-    const pet = pets.find(p => p.id === parseInt(petId));
-    if (!pet) throw new Error('La mascota no existe.');
-    selectedPetId = pet.id;
+// --- LÓGICA DE JUEGO ---
+
+export async function adoptPet(heroId, petId, userId) {
+    const hero = await Hero.findOne({ _id: heroId, user: userId });
+    if (!hero) throw new Error('Héroe no encontrado o no te pertenece.');
+
+    const pet = await Pet.findOne({ _id: petId, user: userId });
+    if (!pet) throw new Error('Mascota no encontrada o no te pertenece.');
+    if (pet.ownerId) throw new Error('Esta mascota ya tiene un dueño.');
+
+    pet.ownerId = hero._id;
+    hero.pets.push(pet._id);
+
+    await pet.save();
+    await hero.save();
+    return hero;
+}
+
+export async function selectPet(petId, userId) {
+    const pet = await Pet.findOne({ _id: petId, user: userId });
+    if (!pet) throw new Error('Mascota no encontrada o no te pertenece.');
+    userSessions[userId] = pet._id.toString();
     return { message: `${pet.name} ha sido seleccionado!` };
 }
 
-export function deselectPet() {
-    if (!selectedPetId) throw new Error('No hay mascota seleccionada.');
-    selectedPetId = null;
+export function deselectPet(userId) {
+    if (!userSessions[userId]) throw new Error('No hay ninguna mascota seleccionada.');
+    delete userSessions[userId];
     return { message: `Has dejado de jugar.` };
 }
 
-export async function getPetStatus() {
-    const { pet } = await getFullState();
+export async function getPetStatus(userId) {
+    const { pet } = await getState(userId);
     let lifePhase;
     if (pet.hp <= 0) lifePhase = 'Muerto 💀';
     else if (pet.health_status === 'enfermo') lifePhase = 'Enfermo 🤢';
@@ -42,104 +63,100 @@ export async function getPetStatus() {
     return { name: pet.name, hp: `${pet.hp}/${pet.maxHp}`, status: lifePhase, fashion: pet.fashion_status, accessories: pet.accessories };
 }
 
-export async function adoptPet(heroId, petId) {
-    const heroes = await heroRepository.getHeroes();
-    const pets = await petRepository.getPets();
-    const heroIndex = heroes.findIndex(h => h.id === parseInt(heroId));
-    if (heroIndex === -1) throw new Error('Héroe no encontrado.');
-    const petIndex = pets.findIndex(p => p.id === parseInt(petId));
-    if (petIndex === -1) throw new Error('Mascota no encontrada.');
-    if (pets[petIndex].ownerId) throw new Error('Esta mascota ya tiene dueño.');
-    pets[petIndex].ownerId = heroes[heroIndex].id;
-    if (!heroes[heroIndex].pets) heroes[heroIndex].pets = [];
-    heroes[heroIndex].pets.push(pets[petIndex].id);
-    await heroRepository.saveHeroes(heroes);
-    await petRepository.savePets(pets);
-    return heroes[heroIndex];
+export async function getAvailableFoods() {
+    return fs.readJson('./database/foods.json');
 }
 
-export async function getAvailableFoods() { return fs.readJson('./database/foods.json'); }
-export async function getAvailableAccessories() { return fs.readJson('./database/accessories.json'); }
+export async function getAvailableAccessories() {
+    return fs.readJson('./database/accessories.json');
+}
 
-export async function feedPet(foodName) {
-    const { pet, allPets, owner, allHeroes } = await getFullState();
+export async function feedPet(foodName, userId) {
+    const { pet, owner } = await getState(userId);
     if (pet.hp <= 0) return { message: `${pet.name} está muerto.` };
+
     const foods = await getAvailableFoods();
     const food = foods.find(f => f.name.toLowerCase() === foodName.toLowerCase());
     if (!food) throw new Error('Esa comida no existe.');
-    if (!owner) throw new Error("La mascota debe tener dueño para comprar comida.");
+    if (!owner) throw new Error("La mascota debe tener un héroe dueño para comprar comida.");
     if (owner.coins < food.cost) throw new Error(`Monedas insuficientes. Cuesta ${food.cost}.`);
 
     if (pet.hp >= pet.maxHp) {
         pet.health_status = 'enfermo';
-        await petRepository.savePets(allPets);
-        return { message: `${pet.name} comió demasiado y se enfermó.` };
+    } else {
+        pet.hp = Math.min(pet.maxHp, pet.hp + food.hpRestore);
+        owner.coins -= food.cost;
+        await owner.save();
     }
-    owner.coins -= food.cost;
-    pet.hp = Math.min(pet.maxHp, pet.hp + food.hpRestore);
-    await heroRepository.saveHeroes(allHeroes);
-    await petRepository.savePets(allPets);
-    return { message: `Alimentaste a ${pet.name}. (+${food.hpRestore} HP)`, newStatus: await getPetStatus() };
+    await pet.save();
+    return { message: `Alimentaste a ${pet.name}. (+${food.hpRestore} HP)`, newStatus: await getPetStatus(userId) };
 }
 
-export async function walkPet() {
-    const { pet, allPets } = await getFullState();
+export async function walkPet(userId) {
+    const { pet, owner } = await getState(userId);
     if (pet.hp <= 0) return { message: `${pet.name} está muerto.` };
+
     if (pet.mood === 'entretenido') {
         pet.health_status = 'enfermo';
-        await petRepository.savePets(allPets);
-        return { message: `${pet.name} paseó de más y se enfermó.` };
+    } else {
+        pet.mood = 'entretenido';
+        if (owner) {
+            owner.coins += 3;
+            await owner.save();
+        }
     }
-    pet.mood = 'entretenido';
-    await petRepository.savePets(allPets);
-    return { message: `Sacaste a pasear a ${pet.name}. ¡Está entretenido!`, newStatus: await getPetStatus() };
+    await pet.save();
+    return { message: `Sacaste a pasear a ${pet.name}.`, newStatus: await getPetStatus(userId) };
 }
 
-export async function giveMedicine(treatmentType) {
-    const { pet, allPets, owner, allHeroes } = await getFullState();
+export async function giveMedicine(treatmentType, userId) {
+    const { pet, owner } = await getState(userId);
     if (pet.health_status !== 'enfermo') throw new Error(`${pet.name} no está enfermo.`);
     const treatments = { basic: { cost: 10, hp: 10 }, advanced: { cost: 30, hp: 20 } };
     const treatment = treatments[treatmentType];
     if (!treatment) throw new Error("Tratamiento no válido.");
     if (!owner) throw new Error("La mascota debe tener dueño.");
     if (owner.coins < treatment.cost) throw new Error(`Monedas insuficientes.`);
+
     owner.coins -= treatment.cost;
     pet.hp = Math.min(pet.maxHp, pet.hp + treatment.hp);
     pet.health_status = 'saludable';
-    await heroRepository.saveHeroes(allHeroes);
-    await petRepository.savePets(allPets);
-    return { message: `¡Curaste a ${pet.name}!`, petStatus: await getPetStatus() };
+    await owner.save();
+    await pet.save();
+    return { message: `¡Curaste a ${pet.name}!`, petStatus: await getPetStatus(userId) };
 }
 
-export async function equipAccessory(accessoryName) {
-    const { pet, allPets, owner, allHeroes } = await getFullState();
+export async function equipAccessory(accessoryName, userId) {
+    const { pet, owner } = await getState(userId);
     if (!owner) throw new Error("Mascota sin dueño no puede equipar.");
     const accessories = await getAvailableAccessories();
     const accessory = accessories.find(acc => acc.name.toLowerCase() === accessoryName.toLowerCase());
     if (!accessory) throw new Error("Accesorio no existe.");
     if (owner.coins < accessory.cost) throw new Error(`Monedas insuficientes. Cuesta ${accessory.cost}.`);
     if (pet.accessories[accessory.type]) throw new Error(`Ya tienes un accesorio de tipo '${accessory.type}'.`);
+
     owner.coins -= accessory.cost;
     pet.accessories[accessory.type] = accessory.name;
     pet.hp += accessory.hpBonus;
     pet.maxHp += accessory.hpBonus;
     pet.fashion_status = 'en-la-moda';
-    await heroRepository.saveHeroes(allHeroes);
-    await petRepository.savePets(allPets);
-    return { message: `¡${pet.name} equipado con ${accessory.name}!`, petStatus: await getPetStatus() };
+    await owner.save();
+    await pet.save();
+    return { message: `¡${pet.name} equipado con ${accessory.name}!`, petStatus: await getPetStatus(userId) };
 }
 
-export async function revivePet() {
-    const { pet, allPets, owner, allHeroes } = await getFullState();
+export async function revivePet(userId) {
+    const { pet, owner } = await getState(userId);
     if (pet.hp > 0) throw new Error(`${pet.name} no está muerto.`);
     if (!owner) throw new Error("Una mascota sin dueño no puede ser revivida.");
     const revivalCost = 100;
     if (owner.coins < revivalCost) throw new Error(`No tienes suficientes monedas. Necesitas ${revivalCost}.`);
+
     owner.coins -= revivalCost;
     pet.hp = pet.maxHp;
     pet.health_status = 'saludable';
     pet.mood = 'entretenido';
-    await heroRepository.saveHeroes(allHeroes);
-    await petRepository.savePets(allPets);
-    return { message: `✨ ¡Milagro! Reviviste a ${pet.name}.`, petStatus: await getPetStatus() };
+    await owner.save();
+    await pet.save();
+    return { message: `✨ ¡Milagro! Reviviste a ${pet.name}.`, petStatus: await getPetStatus(userId) };
 }
