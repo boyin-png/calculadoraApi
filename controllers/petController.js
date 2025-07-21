@@ -48,7 +48,7 @@ router.delete('/pets/:id', protect, async (req, res) => {
     try {
         const result = await petService.deletePetForUser(req.params.id, req.user._id);
         if (!result) return res.status(404).json({ message: "Mascota no encontrada o no te pertenece" });
-        res.json({ message: 'Mascota eliminada' });
+        res.json({ message: 'Mascota eliminada exitosamente' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
