@@ -1,32 +1,21 @@
 import mongoose from 'mongoose';
 
 const heroSchema = new mongoose.Schema({
-    // Campo para vincular al dueño
     user: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId, // Guarda el ID del USUARIO
         required: true,
-        ref: 'User' // Hace referencia al modelo de Usuario
+        ref: 'User'
     },
-    // Atributos básicos
     name: { type: String, required: true },
     power: { type: String, required: true },
     age: { type: Number, required: true },
     city: { type: String, required: true },
-    
-    // --- ATRIBUTOS DE JUEGO RESTAURADOS ---
-    // Lista de los IDs de las mascotas que ha adoptado
-    pets: [{
+    pets: [{ // Guarda una lista de IDs de MASCOTAS
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Pet'
     }],
-    // Monedero del héroe
-    coins: {
-        type: Number,
-        default: 50 // Empieza con 50 monedas por defecto
-    }
-}, {
-    timestamps: true // Añade automáticamente los campos createdAt y updatedAt
-});
+    coins: { type: Number, default: 50 }
+}, { timestamps: true });
 
 const Hero = mongoose.model('Hero', heroSchema);
 export default Hero;
