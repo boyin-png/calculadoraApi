@@ -1,21 +1,19 @@
 import express from 'express';
 import { protect } from '../middleware/authMiddleware.js';
 import * as heroService from '../services/heroServices.js';
-import { check, validationResult } from 'express-validator'; // <-- LÍNEA IMPORTANTE QUE FALTABA
+import { check, validationResult } from 'express-validator';
 
 const router = express.Router();
 
-// GET /api/heroes
 router.get('/heroes', protect, async (req, res) => {
     try {
-        const heroes = await heroService.getHeroForUser(req.user._id);
-        res.json(heroes);
+        const hero = await heroService.getHeroForUser(req.user._id);
+        res.json(hero || {}); // Devuelve el héroe o un objeto vacío si no existe
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
 
-// POST /api/heroes
 router.post('/heroes', protect, [
     check('name', 'El nombre es requerido').not().isEmpty(),
     check('power', 'El poder es requerido').not().isEmpty(),
@@ -32,7 +30,6 @@ router.post('/heroes', protect, [
     }
 });
 
-// PUT /api/heroes/:id
 router.put('/heroes/:id', protect, async (req, res) => {
     try {
         const updatedHero = await heroService.updateHeroForUser(req.params.id, req.body, req.user._id);
@@ -43,12 +40,11 @@ router.put('/heroes/:id', protect, async (req, res) => {
     }
 });
 
-// DELETE /api/heroes/:id
 router.delete('/heroes/:id', protect, async (req, res) => {
     try {
         const result = await heroService.deleteHeroForUser(req.params.id, req.user._id);
         if (!result) return res.status(404).json({ message: "Héroe no encontrado o no te pertenece" });
-        res.json({ message: 'Héroe y sus mascotas eliminados' });
+        res.json({ message: 'Héroe y sus mascotas han sido eliminados' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

@@ -5,11 +5,7 @@ export const getHeroForUser = (userId) => {
     return heroRepository.findHeroByUserId(userId);
 };
 
-export const addHeroForUser = async (heroData, userId) => {
-    const existingHero = await heroRepository.findHeroByUserId(userId);
-    if (existingHero) {
-        throw new Error('Ya tienes un héroe avatar. No puedes crear otro.');
-    }
+export const addHeroForUser = (heroData, userId) => {
     return heroRepository.createHeroForUser(heroData, userId);
 };
 
@@ -18,15 +14,14 @@ export const updateHeroForUser = (heroId, heroData, userId) => {
 };
 
 export const deleteHeroForUser = async (heroId, userId) => {
-    // 1. Buscamos al héroe para asegurarnos de que existe y pertenece al usuario
-    const hero = await heroRepository.findHeroByIdAndUser(heroId, userId);
-    if (!hero) {
-        throw new Error("Héroe no encontrado o no te pertenece");
+    const hero = await heroRepository.findHeroByUserId(userId);
+    if (!hero || hero._id.toString() !== heroId) {
+        throw new Error("Héroe no encontrado o no pertenece al usuario.");
     }
-
-    // 2. Eliminamos todas las mascotas cuyo ownerId sea el ID de este héroe
-    await petRepository.deletePetsByOwnerId(hero._id, userId);
-
-    // 3. Finalmente, eliminamos al héroe
+    
+    // Elimina las mascotas asociadas
+    await petRepository.deletePetsByOwnerHeroId(hero._id);
+    
+    // Elimina al héroe
     return heroRepository.deleteHero(heroId, userId);
 };

@@ -9,18 +9,15 @@ export const createPetForUser = async (petData, userId) => {
     return pet.save();
 };
 
-export const updatePetForUser = async (petId, petData, userId) => {
+export const updatePet = async (petId, petData, userId) => {
     return Pet.findOneAndUpdate({ _id: petId, user: userId }, petData, { new: true });
 };
 
-export const deletePetForUser = async (petId, userId) => {
+export const deletePet = async (petId, userId) => {
     return Pet.findOneAndDelete({ _id: petId, user: userId });
 };
 
-// --- NUEVA FUNCIÓN QUE FALTABA ---
-// Elimina todas las mascotas que pertenecen a un ID de héroe específico (ownerId)
-// y que también pertenecen al usuario logueado.
-export const deletePetsByOwnerId = async (heroId, userId) => {
-    // Usamos deleteMany para borrar todos los documentos que coincidan con el criterio.
-    return Pet.deleteMany({ ownerId: heroId, user: userId });
+// Función para borrar las mascotas de un héroe cuando este es eliminado
+export const deletePetsByOwnerHeroId = async (heroId) => {
+    return Pet.deleteMany({ ownerId: heroId });
 };

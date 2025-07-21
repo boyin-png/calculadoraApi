@@ -1,11 +1,10 @@
 import express from 'express';
 import { protect } from '../middleware/authMiddleware.js';
 import * as petService from '../services/petServices.js';
-import { check, validationResult } from 'express-validator'; // <-- LÍNEA IMPORTANTE QUE FALTABA
+import { check, validationResult } from 'express-validator';
 
 const router = express.Router();
 
-// GET /api/pets
 router.get('/pets', protect, async (req, res) => {
     try {
         const pets = await petService.getAllPetsForUser(req.user._id);
@@ -15,7 +14,6 @@ router.get('/pets', protect, async (req, res) => {
     }
 });
 
-// POST /api/pets
 router.post('/pets', protect, [
     check('name', 'El nombre es requerido').not().isEmpty(),
     check('animal', 'El tipo de animal es requerido').not().isEmpty(),
@@ -32,7 +30,6 @@ router.post('/pets', protect, [
     }
 });
 
-// PUT /api/pets/:id
 router.put('/pets/:id', protect, async (req, res) => {
     try {
         const updatedPet = await petService.updatePetForUser(req.params.id, req.body, req.user._id);
@@ -43,12 +40,11 @@ router.put('/pets/:id', protect, async (req, res) => {
     }
 });
 
-// DELETE /api/pets/:id
 router.delete('/pets/:id', protect, async (req, res) => {
     try {
         const result = await petService.deletePetForUser(req.params.id, req.user._id);
         if (!result) return res.status(404).json({ message: "Mascota no encontrada o no te pertenece" });
-        res.json({ message: 'Mascota eliminada exitosamente' });
+        res.json({ message: 'Mascota eliminada' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
