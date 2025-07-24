@@ -4,7 +4,7 @@ import * as gameService from "../services/gameServices.js";
 
 const router = express.Router();
 
-// Todas las rutas de juego ahora están protegidas
+// Todas las rutas de juego ahora están protegidas y usan el ID del usuario
 
 router.post("/game/adopt/:heroId/:petId", protect, async (req, res) => {
     try {
