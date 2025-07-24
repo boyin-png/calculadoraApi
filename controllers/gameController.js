@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Todas las rutas de juego ahora están protegidas y usan el ID del usuario
 
-router.post("/game/adopt/:heroId/:petId", protect, async (req, res) => {
+router.post("/adopt/:heroId/:petId", protect, async (req, res) => {
     try {
         const { heroId, petId } = req.params;
         const result = await gameService.adoptPet(heroId, petId, req.user._id);
@@ -16,7 +16,7 @@ router.post("/game/adopt/:heroId/:petId", protect, async (req, res) => {
     }
 });
 
-router.post("/game/select/:petId", protect, async (req, res) => {
+router.post("/select/:petId", protect, async (req, res) => {
     try {
         const result = await gameService.selectPet(req.params.petId, req.user._id);
         res.json(result);
@@ -25,7 +25,7 @@ router.post("/game/select/:petId", protect, async (req, res) => {
     }
 });
 
-router.post("/game/deselect", protect, (req, res) => {
+router.post("/deselect", protect, (req, res) => {
     try {
         const result = gameService.deselectPet(req.user._id);
         res.json(result);
@@ -34,7 +34,7 @@ router.post("/game/deselect", protect, (req, res) => {
     }
 });
 
-router.get("/game/status", protect, async (req, res) => {
+router.get("/status", protect, async (req, res) => {
     try {
         const status = await gameService.getPetStatus(req.user._id);
         res.json(status);
@@ -43,7 +43,7 @@ router.get("/game/status", protect, async (req, res) => {
     }
 });
 
-router.get("/game/foods", protect, async (req, res) => {
+router.get("/foods", protect, async (req, res) => {
     try {
         const foods = await gameService.getAvailableFoods();
         res.json(foods);
@@ -52,7 +52,7 @@ router.get("/game/foods", protect, async (req, res) => {
     }
 });
 
-router.post("/game/feed", protect, async (req, res) => {
+router.post("/feed", protect, async (req, res) => {
     try {
         const { foodName } = req.body;
         if (!foodName) return res.status(400).json({ error: "Falta 'foodName' en el body." });
@@ -63,7 +63,7 @@ router.post("/game/feed", protect, async (req, res) => {
     }
 });
 
-router.post("/game/walk", protect, async (req, res) => {
+router.post("/walk", protect, async (req, res) => {
     try {
         const result = await gameService.walkPet(req.user._id);
         res.json(result);
@@ -72,7 +72,7 @@ router.post("/game/walk", protect, async (req, res) => {
     }
 });
 
-router.post("/game/give-medicine", protect, async (req, res) => {
+router.post("/give-medicine", protect, async (req, res) => {
     try {
         const { treatment } = req.body;
         if (!treatment) return res.status(400).json({ error: "Falta 'treatment' en el body." });
@@ -83,7 +83,7 @@ router.post("/game/give-medicine", protect, async (req, res) => {
     }
 });
 
-router.get("/game/accessories", protect, async (req, res) => {
+router.get("/accessories", protect, async (req, res) => {
     try {
         const accessories = await gameService.getAvailableAccessories();
         res.json(accessories);
@@ -92,7 +92,7 @@ router.get("/game/accessories", protect, async (req, res) => {
     }
 });
 
-router.post("/game/equip", protect, async (req, res) => {
+router.post("/equip", protect, async (req, res) => {
     try {
         const { accessoryName } = req.body;
         if (!accessoryName) return res.status(400).json({ error: "Falta 'accessoryName' en el body." });
@@ -103,7 +103,7 @@ router.post("/game/equip", protect, async (req, res) => {
     }
 });
 
-router.post("/game/revive", protect, async (req, res) => {
+router.post("/revive", protect, async (req, res) => {
     try {
         const result = await gameService.revivePet(req.user._id);
         res.json(result);

@@ -103,9 +103,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // --- RUTAS DE LA API ---
 app.use('/api/auth', authController);
-app.use('/api', heroController);
-app.use('/api', petController);
-app.use('/api', gameController);
+app.use('/api/heroes', heroController);
+app.use('/api/pets', petController);
+app.use('/api/game', gameController);
 
 app.get('/', (req, res) => {
     res.send('API funcionando. Visita /api-docs para la documentación interactiva.');
