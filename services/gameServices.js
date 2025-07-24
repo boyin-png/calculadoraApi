@@ -1,41 +1,30 @@
-import Pet from '../models/petModel.js';
-import Hero from '../models/heroModel.js';
+import * as petRepository from '../repositories/petRepository.js';
+import * as heroRepository from '../repositories/heroRepository.js';
+import Hero from '../models/heroModel.js'; // Necesitamos los modelos para buscar en la BD
+import Pet from '../models/petModel.js';   // Necesitamos los modelos para buscar en la BD
 import fs from 'fs-extra';
 
-// La "sesión" ahora solo guarda el ID de la mascota seleccionada por un usuario.
-// En una app real, esto sería una estructura más compleja, pero para esto funciona.
-const userSessions = {}; // Ejemplo: { "userId123": "petId456" }
+let selectedPetId = null;
 
-// --- FUNCIÓN CENTRAL PARA OBTENER ESTADO ---
-async function getState(userId) {
-    const selectedPetId = userSessions[userId];
-    if (!selectedPetId) throw new Error('Debes seleccionar una mascota primero.');
-
-    const pet = await Pet.findOne({ _id: selectedPetId, user: userId });
-    if (!pet) {
-        delete userSessions[userId]; // Limpiamos la sesión si la mascota ya no existe
-        throw new Error('La mascota seleccionada ya no existe o no te pertenece.');
-    }
-    
-    const owner = pet.ownerId ? await Hero.findOne({ _id: pet.ownerId, user: userId }) : null;
-    return { pet, owner };
-}
-
-// --- LÓGICA DE JUEGO ---
-
+// --- FUNCIÓN DE ADOPCIÓN CORREGIDA PARA MONGODB ---
 export async function adoptPet(heroId, petId, userId) {
+    // 1. Buscamos al héroe y a la mascota en la BD, asegurándonos que pertenecen al usuario
     const hero = await Hero.findOne({ _id: heroId, user: userId });
     if (!hero) throw new Error('Héroe no encontrado o no te pertenece.');
 
     const pet = await Pet.findOne({ _id: petId, user: userId });
     if (!pet) throw new Error('Mascota no encontrada o no te pertenece.');
-    if (pet.ownerId) throw new Error('Esta mascota ya tiene un dueño.');
+    
+    if (pet.ownerId) throw new Error('Esta mascota ya tiene un dueño (héroe).');
 
+    // 2. Hacemos la asignación
     pet.ownerId = hero._id;
     hero.pets.push(pet._id);
 
+    // 3. Guardamos los cambios en la base de datos
     await pet.save();
     await hero.save();
+    
     return hero;
 }
 
