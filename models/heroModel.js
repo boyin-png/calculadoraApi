@@ -5,7 +5,7 @@ const heroSchema = new mongoose.Schema({
     power: { type: String, required: true },
     age: { type: Number, required: true },
     city: { type: String, required: true },
-    pets: { type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Pet' }], default: [] },
+    pets: { type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Pet' }], default: [] }, // <--- CORRECCIÓN CRÍTICA
     coins: { type: Number, default: 50 }
 }, { timestamps: true });
 const Hero = mongoose.model('Hero', heroSchema);
