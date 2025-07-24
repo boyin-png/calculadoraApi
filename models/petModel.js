@@ -1,16 +1,7 @@
 import mongoose from 'mongoose';
-
 const petSchema = new mongoose.Schema({
-    user: { // El USUARIO dueño de esta mascota
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'User'
-    },
-    ownerId: { // El HÉROE dueño de esta mascota
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Hero',
-        default: null
-    },
+    user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
+    ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Hero', default: null },
     name: { type: String, required: true },
     animal: { type: String, required: true },
     superpower: { type: String, required: true },
@@ -25,6 +16,5 @@ const petSchema = new mongoose.Schema({
         ropa: { type: String, default: null }
     }
 }, { timestamps: true });
-
 const Pet = mongoose.model('Pet', petSchema);
 export default Pet;
