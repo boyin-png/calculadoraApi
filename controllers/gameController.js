@@ -4,7 +4,18 @@ import * as gameService from "../services/gameServices.js";
 
 const router = express.Router();
 
-// --- Rutas de Sesión ---
+// Todas las rutas de juego ahora están protegidas y usan el ID del usuario
+
+router.post("/game/adopt/:heroId/:petId", protect, async (req, res) => {
+    try {
+        const { heroId, petId } = req.params;
+        const result = await gameService.adoptPet(heroId, petId, req.user._id);
+        res.json({ message: "¡Adopción exitosa!", hero: result });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
+
 router.post("/game/select/:petId", protect, async (req, res) => {
     try {
         const result = await gameService.selectPet(req.params.petId, req.user._id);
@@ -13,6 +24,7 @@ router.post("/game/select/:petId", protect, async (req, res) => {
         res.status(404).json({ message: error.message });
     }
 });
+
 router.post("/game/deselect", protect, (req, res) => {
     try {
         const result = gameService.deselectPet(req.user._id);
@@ -22,7 +34,6 @@ router.post("/game/deselect", protect, (req, res) => {
     }
 });
 
-// --- Rutas de Estado e Interacción ---
 router.get("/game/status", protect, async (req, res) => {
     try {
         const status = await gameService.getPetStatus(req.user._id);
@@ -61,7 +72,6 @@ router.post("/game/walk", protect, async (req, res) => {
     }
 });
 
-// --- RUTAS RESTAURADAS ---
 router.post("/game/give-medicine", protect, async (req, res) => {
     try {
         const { treatment } = req.body;
@@ -93,5 +103,13 @@ router.post("/game/equip", protect, async (req, res) => {
     }
 });
 
+router.post("/game/revive", protect, async (req, res) => {
+    try {
+        const result = await gameService.revivePet(req.user._id);
+        res.json(result);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
 
 export default router;
