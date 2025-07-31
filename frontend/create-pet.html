@@ -1,3 +1,14 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crea tu Mascota - Covis Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
 <body class="register-page">
     <main class="creation-container">
         <div class="form-panel">
@@ -9,27 +20,32 @@
                     <img src="images/icon-leaf.svg" alt="leaf icon" class="input-icon">
                     <input type="text" id="petName" placeholder="Elige un nombre para tu mascota" required>
                 </div>
-
                 <div class="input-wrapper">
                     <img src="images/icon-avatar.svg" alt="avatar icon" class="input-icon">
-                    <select id="petAnimal" required style="flex-grow: 1; border: none; outline: none; background: transparent; font-family: var(--font-main); font-size: 1rem; color: var(--color-text-dark); -webkit-appearance: none; -moz-appearance: none; appearance: none;">
+                    <select id="petAnimal" required style="flex-grow: 1; border: none; outline: none; background: transparent; font-family: var(--font-main); font-size: 1rem; color: var(--color-text-dark); appearance: none;">
                         <option value="" disabled selected>Elige un animal</option>
-                        <option value="perro">Perro</option>
-                        <option value="gato">Gato</option>
-                        <option value="hamster">Hámster</option>
+                        <option value="Perro">Perro</option>
+                        <option value="Gato">Gato</option>
+                        <option value="Hámster">Hámster</option>
                     </select>
                 </div>
-
                 <div class="input-wrapper">
                     <img src="images/icon-key.svg" alt="key icon" class="input-icon">
                     <input type="text" id="petSuperpower" placeholder="Describe su superpoder" required>
                 </div>
-                
                 <button type="submit" class="submit-btn">¡Empezar a Jugar!</button>
             </form>
         </div>
         <div class="avatar-panel">
-             </div>
+            <div class="avatar-switcher">
+                <button id="prev-btn" class="arrow-btn">&lt;</button>
+                <div class="avatar-display">
+                    <img id="pet-image-preview" src="images/pet_blue.png" alt="Vista previa de la mascota">
+                </div>
+                <button id="next-btn" class="arrow-btn">&gt;</button>
+            </div>
+        </div>
     </main>
     <script src="js/pet-creator.js"></script>
 </body>
+</html>

@@ -115,9 +115,6 @@ app.use('/api/pets', petController);
 app.use('/api/game', gameController);
 
 // Esta ruta de captura debe ir DESPUÉS de todas tus rutas de /api
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'login.html'));
-});
 
 app.listen(port, () => {
     console.log(`🚀 Servidor funcionando en http://localhost:${port}`);
