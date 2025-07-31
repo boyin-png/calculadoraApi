@@ -52,23 +52,158 @@
     </main>
 
     <div id="game-container" class="hidden">
+        <!-- Header con información del usuario -->
+        <div class="game-header">
+            <div class="user-info">
+                <span id="hero-name">Cargando...</span>
+                <div class="header-actions">
+                    <button id="settings-btn" class="icon-btn" title="Configuración">⚙️</button>
+                    <button id="add-pet-btn" class="icon-btn" title="Agregar nueva mascota">➕</button>
+                    <button id="logout-btn" class="icon-btn" title="Cerrar Sesión">🚪</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Selector de mascotas si tiene varias -->
+        <div id="pet-selector" class="pet-selector hidden">
+            <button id="prev-pet" class="nav-pet-btn">◀</button>
+            <span id="current-pet-indicator">1 / 1</span>
+            <button id="next-pet" class="nav-pet-btn">▶</button>
+        </div>
+
+        <!-- Habitación principal de la mascota -->
         <div id="pet-room" class="pet-room">
+            <!-- Mascota en el centro -->
             <div class="pet-environment">
                 <img id="pet-image" src="images/pet_blue.png" alt="Mascota" class="pet-main-img">
+                <div id="pet-accessories" class="pet-accessories"></div>
             </div>
+            
+            <!-- Información de la mascota -->
             <div class="pet-info">
-                <h2 id="pet-name"></h2>
-                <p id="pet-animal"></p>
-                <p id="pet-superpower"></p>
-                <p id="pet-status"></p>
+                <h2 id="pet-name">Mi Mascota</h2>
+                <div class="pet-stats">
+                    <div class="stat-bar">
+                        <span>❤️ Salud:</span>
+                        <div class="progress-bar">
+                            <div id="health-bar" class="progress-fill"></div>
+                        </div>
+                        <span id="health-text">100%</span>
+                    </div>
+                    <div class="stat-bar">
+                        <span>😊 Felicidad:</span>
+                        <div class="progress-bar">
+                            <div id="happiness-bar" class="progress-fill"></div>
+                        </div>
+                        <span id="happiness-text">100%</span>
+                    </div>
+                    <div class="stat-bar">
+                        <span>🍎 Hambre:</span>
+                        <div class="progress-bar">
+                            <div id="hunger-bar" class="progress-fill"></div>
+                        </div>
+                        <span id="hunger-text">0%</span>
+                    </div>
+                </div>
             </div>
-            <div class="pet-actions">
-                <button id="feed-btn" class="action-btn">🍗 Alimentar</button>
-                <button id="heal-btn" class="action-btn">💊 Curar</button>
-                <button id="walk-btn" class="action-btn">🚶 Pasear</button>
-                <button id="revive-btn" class="action-btn">❤️ Revivir</button>
+        </div>
+
+        <!-- Botones de acción tipo Pou -->
+        <div class="action-grid">
+            <button id="feed-btn" class="action-btn" title="Alimentar">
+                <span class="action-icon">🍗</span>
+                <span class="action-label">Alimentar</span>
+            </button>
+            <button id="medicine-btn" class="action-btn" title="Dar medicina">
+                <span class="action-icon">💊</span>
+                <span class="action-label">Medicina</span>
+            </button>
+            <button id="walk-btn" class="action-btn" title="Pasear">
+                <span class="action-icon">🚶</span>
+                <span class="action-label">Pasear</span>
+            </button>
+            <button id="accessories-btn" class="action-btn" title="Accesorios">
+                <span class="action-icon">👑</span>
+                <span class="action-label">Accesorios</span>
+            </button>
+            <button id="revive-btn" class="action-btn hidden" title="Revivir">
+                <span class="action-icon">❤️‍🩹</span>
+                <span class="action-label">Revivir</span>
+            </button>
+        </div>
+
+        <!-- Modal para configuración del héroe -->
+        <div id="hero-settings-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Configuración del Avatar</h3>
+                    <button id="close-settings" class="close-btn">✕</button>
+                </div>
+                <form id="hero-settings-form">
+                    <div class="input-group">
+                        <label for="hero-name-input">Nombre del Héroe:</label>
+                        <input type="text" id="hero-name-input" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="hero-power-input">Poder:</label>
+                        <input type="text" id="hero-power-input" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="hero-age-input">Edad:</label>
+                        <input type="number" id="hero-age-input" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="hero-city-input">Ciudad:</label>
+                        <input type="text" id="hero-city-input" required>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="submit" class="save-btn">Guardar Cambios</button>
+                        <button type="button" id="delete-hero-btn" class="delete-btn">Eliminar Avatar</button>
+                    </div>
+                </form>
             </div>
-            <button id="logout-btn" class="logout-btn">Cerrar Sesión</button>
+        </div>
+
+        <!-- Modal para seleccionar comida -->
+        <div id="food-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Seleccionar Comida</h3>
+                    <button id="close-food-modal" class="close-btn">✕</button>
+                </div>
+                <div id="food-grid" class="item-grid"></div>
+            </div>
+        </div>
+
+        <!-- Modal para medicina -->
+        <div id="medicine-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Seleccionar Medicina</h3>
+                    <button id="close-medicine-modal" class="close-btn">✕</button>
+                </div>
+                <div id="medicine-grid" class="item-grid">
+                    <div class="medicine-item" data-treatment="Vitaminas">
+                        <span class="item-icon">💊</span>
+                        <span class="item-name">Vitaminas</span>
+                    </div>
+                    <div class="medicine-item" data-treatment="Antibiótico">
+                        <span class="item-icon">💉</span>
+                        <span class="item-name">Antibiótico</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para accesorios -->
+        <div id="accessories-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Seleccionar Accesorio</h3>
+                    <button id="close-accessories-modal" class="close-btn">✕</button>
+                </div>
+                <div id="accessories-grid" class="item-grid"></div>
+            </div>
         </div>
     </div>
 
