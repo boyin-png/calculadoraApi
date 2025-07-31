@@ -1,32 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_BASE_URL = 'https://calculadoraapi-loaf.onrender.com';
+    // URL vacía para que funcione en cualquier servidor (local o Render)
+    const API_BASE_URL = '';
 
     // --- LÓGICA PARA LOGIN.HTML ---
-    if (document.body.classList.contains('login-page')) {
-        const welcomeBox = document.getElementById('welcome-box');
-        const loginFormContainer = document.getElementById('login-form-container');
-        const loginForm = document.getElementById('login-form');
-        const showLoginBtn = document.getElementById('show-login-btn');
-        const backToWelcomeBtn = document.getElementById('back-to-welcome');
-
-        showLoginBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            welcomeBox.classList.add('hidden');
-            loginFormContainer.classList.remove('hidden');
-        });
-
-        backToWelcomeBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            loginFormContainer.classList.add('hidden');
-            welcomeBox.classList.remove('hidden');
-        });
-
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const errorMessage = document.getElementById('error-message');
             const submitButton = loginForm.querySelector('.submit-btn');
+            
             errorMessage.textContent = '';
             submitButton.disabled = true;
             submitButton.textContent = 'Entrando...';
@@ -37,12 +22,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password }),
                 });
+
+                // Leemos la respuesta como JSON
                 const data = await response.json();
-                if (!response.ok) throw new Error(data.message);
+
+                // Si la respuesta no fue exitosa (status no es 2xx)
+                if (!response.ok) {
+                    // Lanzamos un error con el mensaje que viene del backend
+                    throw new Error(data.message || 'Error desconocido del servidor.');
+                }
                 
+                // Si todo sale bien, guardamos el token y redirigimos
                 localStorage.setItem('authToken', data.token);
                 window.location.href = 'index.html';
+
             } catch (error) {
+                // Mostramos el mensaje de error en la pantalla
                 errorMessage.textContent = error.message;
                 submitButton.disabled = false;
                 submitButton.textContent = 'Entrar';

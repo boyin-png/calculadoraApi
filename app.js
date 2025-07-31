@@ -20,11 +20,10 @@ const port = process.env.PORT || 3001;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Sirve los archivos estáticos (HTML, CSS, JS, imágenes) desde la carpeta 'frontend'
-app.use(express.static(path.join(__dirname, 'frontend')));
-
 app.use(cors());
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, 'frontend')));
 
 // --- CONFIGURACIÓN DE SWAGGER COMPLETA Y VERIFICADA ---
 const swaggerDocument = {
@@ -114,7 +113,9 @@ app.use('/api/heroes', heroController);
 app.use('/api/pets', petController);
 app.use('/api/game', gameController);
 
-// Esta ruta de captura debe ir DESPUÉS de todas tus rutas de /api
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'login.html'));
+});
 
 app.listen(port, () => {
     console.log(`🚀 Servidor funcionando en http://localhost:${port}`);

@@ -52,9 +52,24 @@
     </main>
 
     <div id="game-container" class="hidden">
-        <h1>¡Bienvenido al Juego!</h1>
-        <p>Aquí aparecerá tu mascota y las acciones.</p>
-        <button id="logout-btn">Cerrar Sesión</button>
+        <div id="pet-room" class="pet-room">
+            <div class="pet-environment">
+                <img id="pet-image" src="images/pet_blue.png" alt="Mascota" class="pet-main-img">
+            </div>
+            <div class="pet-info">
+                <h2 id="pet-name"></h2>
+                <p id="pet-animal"></p>
+                <p id="pet-superpower"></p>
+                <p id="pet-status"></p>
+            </div>
+            <div class="pet-actions">
+                <button id="feed-btn" class="action-btn">🍗 Alimentar</button>
+                <button id="heal-btn" class="action-btn">💊 Curar</button>
+                <button id="walk-btn" class="action-btn">🚶 Pasear</button>
+                <button id="revive-btn" class="action-btn">❤️ Revivir</button>
+            </div>
+            <button id="logout-btn" class="logout-btn">Cerrar Sesión</button>
+        </div>
     </div>
 
     <script src="js/game.js"></script>
