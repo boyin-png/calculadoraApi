@@ -8,10 +8,12 @@ const userSessions = {}; // Ejemplo: { "userId123": "petId456" }
 // --- FUNCIÓN CENTRAL PARA OBTENER ESTADO ---
 async function getFullState(userId) {
     const selectedPetId = userSessions[userId];
+    
     if (!selectedPetId) throw new Error('Debes seleccionar una mascota primero con POST /api/game/select/{petId}');
 
     // Buscamos la mascota directamente en la base de datos, asegurándonos que pertenece al usuario
     const pet = await Pet.findOne({ _id: selectedPetId, user: userId });
+    
     if (!pet) {
         delete userSessions[userId]; // Limpiamos la sesión si la mascota ya no existe
         throw new Error('La mascota seleccionada ya no existe o no te pertenece.');
@@ -19,6 +21,7 @@ async function getFullState(userId) {
     
     // Buscamos al héroe dueño directamente en la base de datos
     const owner = pet.ownerId ? await Hero.findOne({ _id: pet.ownerId, user: userId }) : null;
+    
     return { pet, owner };
 }
 
@@ -43,6 +46,37 @@ export async function adoptPet(heroId, petId, userId) {
 export async function selectPet(petId, userId) {
     const pet = await Pet.findOne({ _id: petId, user: userId });
     if (!pet) throw new Error('Mascota no encontrada o no te pertenece.');
+    
+    // Verificar y corregir auto-adopción si es necesario
+    if (!pet.ownerId) {
+        console.log('🔧 Reparando adopción para mascota sin dueño:', pet.name);
+        let hero = await Hero.findOne({ user: userId });
+        
+        if (!hero) {
+            // Crear héroe automáticamente si no existe
+            hero = new Hero({
+                user: userId,
+                name: 'Cuidador de Mascotas',
+                power: 'Amor por las mascotas',
+                age: 25,
+                city: 'Pet-polis',
+                pets: [],
+                coins: 100
+            });
+            await hero.save();
+        }
+        
+        // Asignar adopción
+        pet.ownerId = hero._id;
+        if (!hero.pets.includes(pet._id)) {
+            hero.pets.push(pet._id);
+        }
+        
+        await pet.save();
+        await hero.save();
+        console.log('✅ Adopción reparada para', pet.name);
+    }
+    
     userSessions[userId] = pet._id.toString();
     return { message: `${pet.name} ha sido seleccionado!` };
 }

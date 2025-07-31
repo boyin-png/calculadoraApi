@@ -42,16 +42,32 @@ export const addPetForUser = async (petData, userId) => {
     const pet = await petRepository.createPetForUser(petData, userId);
     
     // 2. Buscar el héroe del usuario para auto-adopción
-    const hero = await Hero.findOne({ user: userId });
-    if (hero) {
-        // 3. Auto-adoptar la mascota recién creada
-        pet.ownerId = hero._id;
-        hero.pets.push(pet._id);
-        
-        // 4. Guardar los cambios
-        await pet.save();
+    let hero = await Hero.findOne({ user: userId });
+    
+    // 3. Si no hay héroe, crear uno automáticamente
+    if (!hero) {
+        console.log('🚀 Creando héroe automáticamente para auto-adopción de:', pet.name);
+        hero = new Hero({
+            user: userId,
+            name: 'Cuidador de Mascotas',
+            power: 'Amor por las mascotas',
+            age: 25,
+            city: 'Pet-polis',
+            pets: [],
+            coins: 100
+        });
         await hero.save();
     }
+    
+    // 4. Auto-adoptar la mascota recién creada
+    pet.ownerId = hero._id;
+    hero.pets.push(pet._id);
+    
+    // 5. Guardar los cambios
+    await pet.save();
+    await hero.save();
+    
+    console.log('✅ Mascota', pet.name, 'adoptada automáticamente por', hero.name);
     
     return pet;
 };

@@ -14,7 +14,8 @@ const petSchema = new mongoose.Schema({
         sombrero: { type: String, default: null },
         lentes: { type: String, default: null },
         ropa: { type: String, default: null }
-    }
+    },
+    lastUpdate: { type: Date, default: Date.now }
 }, { timestamps: true });
 const Pet = mongoose.model('Pet', petSchema);
 export default Pet;
