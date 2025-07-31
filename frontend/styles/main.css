@@ -74,9 +74,55 @@ body.register-page, body.game-page {
 .input-icon { width: 24px; height: 24px; margin-right: 0.75rem; }
 .input-wrapper input { flex-grow: 1; border: none; outline: none; background: transparent; font-family: var(--font-main); font-size: 1rem; color: var(--color-text-dark); }
 .input-wrapper input::placeholder { color: #aaa; }
-.submit-btn { width: 100%; padding: 1rem; margin-top: 1rem; font-family: var(--font-main); font-size: 1.2rem; font-weight: 700; color: white; background-color: var(--color-button-blue); border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 0 var(--color-button-shadow); transition: all 0.1s ease-in-out; position: relative; }
-.submit-btn::before { content: ''; position: absolute; top: 5%; left: 10%; width: 80%; height: 40%; background: linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(255,255,255,0)); border-radius: 50px; }
-.submit-btn:active { transform: translateY(4px); box-shadow: 0 0px 0 var(--color-button-shadow); }
+.submit-btn { 
+    width: 100%; 
+    padding: 1rem; 
+    margin-top: 1rem; 
+    font-family: var(--font-main); 
+    font-size: 1.2rem; 
+    font-weight: 700; 
+    color: white; 
+    background: linear-gradient(145deg, #a8e6cf, #88d8a3); 
+    border: none; 
+    border-radius: 50px; 
+    cursor: pointer; 
+    box-shadow: 
+        0 8px 0 #7bccc4,
+        0 12px 25px rgba(123, 204, 196, 0.4),
+        inset 0 2px 0 rgba(255,255,255,0.3),
+        inset 0 -2px 0 rgba(0,0,0,0.1); 
+    transition: all 0.1s ease-in-out; 
+    position: relative; 
+    border: 3px solid rgba(255,255,255,0.2);
+}
+.submit-btn::before { 
+    content: ''; 
+    position: absolute; 
+    top: 8%; 
+    left: 15%; 
+    width: 70%; 
+    height: 35%; 
+    background: linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0)); 
+    border-radius: 50px; 
+    pointer-events: none;
+}
+.submit-btn:hover {
+    background: linear-gradient(145deg, #b8f6df, #98e8b3);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 10px 0 #7bccc4,
+        0 15px 30px rgba(123, 204, 196, 0.5),
+        inset 0 2px 0 rgba(255,255,255,0.4),
+        inset 0 -2px 0 rgba(0,0,0,0.1);
+}
+.submit-btn:active { 
+    transform: translateY(6px); 
+    box-shadow: 
+        0 2px 0 #7bccc4,
+        0 4px 15px rgba(123, 204, 196, 0.3),
+        inset 0 2px 0 rgba(255,255,255,0.2),
+        inset 0 -1px 0 rgba(0,0,0,0.1); 
+}
 .back-link { display: block; text-align: center; margin-top: 1.5rem; color: #0056b3; text-decoration: none; font-weight: 700; }
 .avatar-switcher { display: flex; align-items: center; justify-content: center; width: 100%; }
 .avatar-display { width: 250px; height: 250px; background-color: var(--color-green-soft); border-radius: 20px; display: flex; justify-content: center; align-items: center; color: var(--color-text-dark); font-weight: 700; border: 4px dashed rgba(255, 255, 255, 0.8); overflow: hidden; }
@@ -121,22 +167,53 @@ body.register-page, body.game-page {
 }
 
 .icon-btn {
-    background: var(--color-button-blue);
+    background: linear-gradient(145deg, #a8e6cf, #88d8a3);
     border: none;
     border-radius: 50%;
     width: 40px;
     height: 40px;
     font-size: 1.2rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.1s ease-in-out;
     color: white;
-    box-shadow: 0 2px 8px rgba(46, 154, 254, 0.3);
+    box-shadow: 
+        0 4px 0 #7bccc4,
+        0 6px 15px rgba(123, 204, 196, 0.3),
+        inset 0 1px 0 rgba(255,255,255,0.3),
+        inset 0 -1px 0 rgba(0,0,0,0.1);
+    position: relative;
+    border: 2px solid rgba(255,255,255,0.2);
+}
+
+.icon-btn::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 20%;
+    width: 60%;
+    height: 40%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0));
+    border-radius: 50%;
+    pointer-events: none;
 }
 
 .icon-btn:hover {
-    background: var(--color-button-shadow);
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(46, 154, 254, 0.4);
+    background: linear-gradient(145deg, #b8f6df, #98e8b3);
+    transform: translateY(-1px);
+    box-shadow: 
+        0 5px 0 #7bccc4,
+        0 8px 20px rgba(123, 204, 196, 0.4),
+        inset 0 1px 0 rgba(255,255,255,0.4),
+        inset 0 -1px 0 rgba(0,0,0,0.1);
+}
+
+.icon-btn:active {
+    transform: translateY(2px);
+    box-shadow: 
+        0 2px 0 #7bccc4,
+        0 4px 10px rgba(123, 204, 196, 0.2),
+        inset 0 1px 0 rgba(255,255,255,0.2),
+        inset 0 -1px 0 rgba(0,0,0,0.1);
 }
 
 .pet-selector {
@@ -246,27 +323,55 @@ body.register-page, body.game-page {
 }
 
 .action-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(145deg, #a8e6cf, #88d8a3);
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 25px;
     padding: 1.5rem 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: all 0.1s ease-in-out;
+    box-shadow: 
+        0 6px 0 #7bccc4,
+        0 10px 20px rgba(123, 204, 196, 0.3),
+        inset 0 2px 0 rgba(255,255,255,0.3),
+        inset 0 -2px 0 rgba(0,0,0,0.1);
+    position: relative;
+    border: 2px solid rgba(255,255,255,0.2);
+}
+
+.action-btn::before {
+    content: '';
+    position: absolute;
+    top: 8%;
+    left: 15%;
+    width: 70%;
+    height: 30%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(255,255,255,0));
+    border-radius: 25px;
+    pointer-events: none;
 }
 
 .action-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    background: linear-gradient(145deg, #b8f6df, #98e8b3);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 0 #7bccc4,
+        0 12px 25px rgba(123, 204, 196, 0.4),
+        inset 0 2px 0 rgba(255,255,255,0.4),
+        inset 0 -2px 0 rgba(0,0,0,0.1);
 }
 
 .action-btn:active {
-    transform: translateY(-1px);
+    transform: translateY(4px);
+    box-shadow: 
+        0 2px 0 #7bccc4,
+        0 6px 15px rgba(123, 204, 196, 0.2),
+        inset 0 2px 0 rgba(255,255,255,0.2),
+        inset 0 -1px 0 rgba(0,0,0,0.1);
 }
 
 .action-icon {
@@ -349,31 +454,97 @@ body.register-page, body.game-page {
 
 .save-btn, .delete-btn {
     flex: 1;
-    padding: 0.75rem;
+    padding: 1rem;
     border: none;
-    border-radius: 10px;
+    border-radius: 50px;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.1s ease-in-out;
+    position: relative;
+    border: 2px solid rgba(255,255,255,0.2);
 }
 
 .save-btn {
-    background: #4CAF50;
+    background: linear-gradient(145deg, #a8e6cf, #88d8a3);
     color: white;
+    box-shadow: 
+        0 6px 0 #7bccc4,
+        0 10px 20px rgba(123, 204, 196, 0.3),
+        inset 0 2px 0 rgba(255,255,255,0.3),
+        inset 0 -2px 0 rgba(0,0,0,0.1);
+}
+
+.save-btn::before {
+    content: '';
+    position: absolute;
+    top: 8%;
+    left: 15%;
+    width: 70%;
+    height: 30%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(255,255,255,0));
+    border-radius: 50px;
+    pointer-events: none;
 }
 
 .save-btn:hover {
-    background: #45a049;
+    background: linear-gradient(145deg, #b8f6df, #98e8b3);
+    transform: translateY(-1px);
+    box-shadow: 
+        0 7px 0 #7bccc4,
+        0 12px 25px rgba(123, 204, 196, 0.4),
+        inset 0 2px 0 rgba(255,255,255,0.4),
+        inset 0 -2px 0 rgba(0,0,0,0.1);
+}
+
+.save-btn:active {
+    transform: translateY(4px);
+    box-shadow: 
+        0 2px 0 #7bccc4,
+        0 6px 15px rgba(123, 204, 196, 0.2),
+        inset 0 2px 0 rgba(255,255,255,0.2),
+        inset 0 -1px 0 rgba(0,0,0,0.1);
 }
 
 .delete-btn {
-    background: #f44336;
+    background: linear-gradient(145deg, #ffb3ba, #ff8a95);
     color: white;
+    box-shadow: 
+        0 6px 0 #e57373,
+        0 10px 20px rgba(229, 115, 115, 0.3),
+        inset 0 2px 0 rgba(255,255,255,0.3),
+        inset 0 -2px 0 rgba(0,0,0,0.1);
+}
+
+.delete-btn::before {
+    content: '';
+    position: absolute;
+    top: 8%;
+    left: 15%;
+    width: 70%;
+    height: 30%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(255,255,255,0));
+    border-radius: 50px;
+    pointer-events: none;
 }
 
 .delete-btn:hover {
-    background: #da190b;
+    background: linear-gradient(145deg, #ffcccb, #ffaaaa);
+    transform: translateY(-1px);
+    box-shadow: 
+        0 7px 0 #e57373,
+        0 12px 25px rgba(229, 115, 115, 0.4),
+        inset 0 2px 0 rgba(255,255,255,0.4),
+        inset 0 -2px 0 rgba(0,0,0,0.1);
+}
+
+.delete-btn:active {
+    transform: translateY(4px);
+    box-shadow: 
+        0 2px 0 #e57373,
+        0 6px 15px rgba(229, 115, 115, 0.2),
+        inset 0 2px 0 rgba(255,255,255,0.2),
+        inset 0 -1px 0 rgba(0,0,0,0.1);
 }
 
 .item-grid {
@@ -554,11 +725,11 @@ body.dashboard-page {
 }
 
 .create-pet-btn {
-    background: var(--color-button-blue);
+    background: linear-gradient(145deg, #a8e6cf, #88d8a3);
     color: white;
     border: none;
     border-radius: 50px;
-    padding: 1rem 2rem;
+    padding: 1.5rem 3rem;
     font-size: 1.2rem;
     font-weight: 700;
     cursor: pointer;
@@ -567,28 +738,44 @@ body.dashboard-page {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    box-shadow: 0 4px 0 var(--color-button-shadow);
+    box-shadow: 
+        0 8px 0 #7bccc4,
+        0 12px 25px rgba(123, 204, 196, 0.4),
+        inset 0 2px 0 rgba(255,255,255,0.3),
+        inset 0 -2px 0 rgba(0,0,0,0.1);
     position: relative;
+    border: 3px solid rgba(255,255,255,0.2);
 }
 
 .create-pet-btn::before {
     content: '';
     position: absolute;
-    top: 5%;
-    left: 10%;
-    width: 80%;
-    height: 40%;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(255,255,255,0));
+    top: 8%;
+    left: 15%;
+    width: 70%;
+    height: 35%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0));
     border-radius: 50px;
+    pointer-events: none;
 }
 
 .create-pet-btn:hover {
-    background: var(--color-button-shadow);
+    background: linear-gradient(145deg, #b8f6df, #98e8b3);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 10px 0 #7bccc4,
+        0 15px 30px rgba(123, 204, 196, 0.5),
+        inset 0 2px 0 rgba(255,255,255,0.4),
+        inset 0 -2px 0 rgba(0,0,0,0.1);
 }
 
 .create-pet-btn:active {
-    transform: translateY(4px);
-    box-shadow: 0 0px 0 var(--color-button-shadow);
+    transform: translateY(6px);
+    box-shadow: 
+        0 2px 0 #7bccc4,
+        0 4px 15px rgba(123, 204, 196, 0.3),
+        inset 0 2px 0 rgba(255,255,255,0.2),
+        inset 0 -1px 0 rgba(0,0,0,0.1);
 }
 
 .create-icon {
