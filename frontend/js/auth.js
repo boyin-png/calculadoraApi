@@ -49,9 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error(data.message || 'Error de autenticación.');
                 }
                 
-                // Guardamos el token y vamos DIRECTAMENTE a crear mascota
+                // Guardamos el token y vamos al dashboard
                 localStorage.setItem('authToken', data.token); 
-                window.location.href = 'create-pet.html';
+                window.location.href = 'dashboard.html';
 
             } catch (error) {
                 errorMessage.textContent = error.message;
@@ -99,8 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 if (!heroResponse.ok) throw new Error(`Creación de héroe fallida: ${(await heroResponse.json()).message}`);
                 
-                // Al registrarse, SIEMPRE vamos a crear mascota
-                window.location.href = 'create-pet.html';
+                // Al registrarse, vamos al dashboard
+                window.location.href = 'dashboard.html';
 
             } catch (error) {
                 errorMessage.textContent = error.message;

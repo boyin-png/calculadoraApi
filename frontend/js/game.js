@@ -152,6 +152,9 @@ function configurarEventos() {
     });
     
     // Botones del header
+    document.getElementById('dashboard-btn').addEventListener('click', () => {
+        window.location.href = 'dashboard.html';
+    });
     document.getElementById('settings-btn').addEventListener('click', abrirConfiguracionHeroe);
     document.getElementById('add-pet-btn').addEventListener('click', () => {
         window.location.href = 'create-pet.html';

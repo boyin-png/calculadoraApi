@@ -43,8 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(errorData.message || 'No se pudo crear la mascota.');
             }
 
-            // Si todo sale bien, ahora sí vamos al juego
-            window.location.href = 'index.html';
+            // Si todo sale bien, volvemos al dashboard
+            window.location.href = 'dashboard.html';
 
         } catch (error) {
             errorMessage.textContent = error.message;

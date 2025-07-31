@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Panel - Covis Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="dashboard-page">
+    <div id="loading-screen" class="loading-overlay">
+        <p>Cargando tu panel...</p>
+    </div>
+
+    <main class="dashboard-container">
+        <!-- Header del dashboard -->
+        <div class="dashboard-header">
+            <div class="hero-info">
+                <h1 id="hero-welcome">¡Bienvenido, <span id="hero-name-display">Héroe</span>!</h1>
+                <p id="hero-details">Poder: <span id="hero-power-display">Cargando...</span></p>
+            </div>
+            <div class="header-actions">
+                <button id="settings-btn" class="icon-btn" title="Configuración">⚙️</button>
+                <button id="logout-btn" class="icon-btn" title="Cerrar Sesión">🚪</button>
+            </div>
+        </div>
+
+        <!-- Sección de mascotas -->
+        <div class="pets-section">
+            <h2>Mis Mascotas</h2>
+            <div id="pets-grid" class="pets-grid">
+                <!-- Las mascotas se cargarán aquí dinámicamente -->
+            </div>
+            
+            <!-- Botón para crear nueva mascota -->
+            <div class="create-pet-section">
+                <button id="create-new-pet-btn" class="create-pet-btn">
+                    <span class="create-icon">➕</span>
+                    <span class="create-label">Crear Nueva Mascota</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Sección de estadísticas rápidas -->
+        <div class="stats-section">
+            <h3>Resumen</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-icon">🐾</span>
+                    <span class="stat-number" id="total-pets">0</span>
+                    <span class="stat-label">Mascotas</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🎮</span>
+                    <span class="stat-number" id="total-games">0</span>
+                    <span class="stat-label">Partidas</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">⭐</span>
+                    <span class="stat-number" id="total-score">0</span>
+                    <span class="stat-label">Puntuación</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para configuración del héroe -->
+        <div id="hero-settings-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Configuración del Avatar</h3>
+                    <button id="close-settings" class="close-btn">✕</button>
+                </div>
+                <form id="hero-settings-form">
+                    <div class="input-group">
+                        <label for="hero-name-input">Nombre del Héroe:</label>
+                        <input type="text" id="hero-name-input" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="hero-power-input">Poder:</label>
+                        <input type="text" id="hero-power-input" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="hero-age-input">Edad:</label>
+                        <input type="number" id="hero-age-input" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="hero-city-input">Ciudad:</label>
+                        <input type="text" id="hero-city-input" required>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="submit" class="save-btn">Guardar Cambios</button>
+                        <button type="button" id="delete-hero-btn" class="delete-btn">Eliminar Avatar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
