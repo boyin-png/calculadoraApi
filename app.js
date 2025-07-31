@@ -114,10 +114,6 @@ app.use('/api/heroes', heroController);
 app.use('/api/pets', petController);
 app.use('/api/game', gameController);
 
-app.get('/', (req, res) => {
-    res.send('API funcionando. Visita /api-docs para la documentación interactiva.');
-});
-
 // Esta ruta de captura debe ir DESPUÉS de todas tus rutas de /api
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'login.html'));
