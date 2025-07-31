@@ -4,58 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Covis Simulator - Bienvenido</title>
-    <!-- Fuentes de Google para la estética amigable -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
-    <!-- RUTA CORREGIDA -->
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body class="login-page">
     <main class="main-container">
-        
-        <!-- Caja de bienvenida -->
         <div id="welcome-box" class="welcome-card">
             <div class="logo-container">
-                <!-- RUTA CORREGIDA -->
                 <img src="images/covig.png" alt="Logo de Covis Simulator">
             </div>
             <div class="button-container">
                 <a href="#" id="show-login-btn">
-                    <!-- RUTA CORREGIDA -->
                     <img src="images/boton1.png" alt="Iniciar Sesión">
                 </a>
                 <a href="register.html">
-                    <!-- RUTA CORREGIDA -->
                     <img src="images/boton2.png" alt="Crear Cuenta">
                 </a>
             </div>
         </div>
-
-        <!-- Formulario de Login (ahora con el estilo de Animal Crossing) -->
-        <form id="login-form" class="creation-container hidden">
+        <div id="login-form-container" class="creation-container hidden">
             <div class="form-panel">
                 <h1 class="title">Iniciar Sesión</h1>
-                <p id="error-message" class="error-text"></p>
-                
-                <div class="input-wrapper">
-                    <!-- RUTA CORREGIDA -->
-                    <img src="images/icon-leaf.svg" alt="leaf icon" class="input-icon">
-                    <input type="text" id="username" placeholder="Nombre de usuario" required>
-                </div>
-                <div class="input-wrapper">
-                    <!-- RUTA CORREGIDA -->
-                    <img src="images/icon-key.svg" alt="key icon" class="input-icon">
-                    <input type="password" id="password" placeholder="Contraseña" required>
-                </div>
-
-                <button type="submit" class="submit-btn">Entrar</button>
-                <a href="#" id="back-to-welcome" class="back-link">&lt; Volver</a>
+                <form id="login-form">
+                    <p id="error-message" class="error-text"></p>
+                    <div class="input-wrapper">
+                        <img src="images/icon-leaf.svg" alt="leaf icon" class="input-icon">
+                        <input type="text" id="username" placeholder="Nombre de usuario" required>
+                    </div>
+                    <div class="input-wrapper">
+                        <img src="images/icon-key.svg" alt="key icon" class="input-icon">
+                        <input type="password" id="password" placeholder="Contraseña" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Entrar</button>
+                    <a href="#" id="back-to-welcome" class="back-link">&lt; Volver</a>
+                </form>
             </div>
-        </form>
-
+        </div>
     </main>
-    <!-- RUTA CORREGIDA -->
     <script src="js/auth.js"></script>
 </body>
 </html>

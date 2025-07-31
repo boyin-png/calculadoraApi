@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crea tu Héroe - Covis Simulator</title>
+    <title>Crea tu Mascota - Covis Simulator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
@@ -11,36 +11,32 @@
 </head>
 <body class="register-page">
     <main class="creation-container">
+        <!-- Panel Izquierdo: Formulario -->
         <div class="form-panel">
-            <h1 class="title">Crea tu Héroe</h1>
-            <form id="register-form">
+            <h1 class="title">Crea tu Mascota</h1>
+            <p class="subtitle">¡Todo héroe necesita un compañero!</p>
+            <form id="create-pet-form">
                 <p id="error-message" class="error-text"></p>
                 <div class="input-wrapper">
                     <img src="images/icon-leaf.svg" alt="leaf icon" class="input-icon">
-                    <input type="text" id="username" placeholder="Elige un nombre de usuario" required>
+                    <input type="text" id="petName" placeholder="Elige un nombre para tu mascota" required>
                 </div>
-                <div class="input-wrapper">
-                    <img src="images/icon-key.svg" alt="key icon" class="input-icon">
-                    <input type="password" id="password" placeholder="Elige una contraseña" required>
-                </div>
-                <div class="input-wrapper">
-                    <img src="images/icon-avatar.svg" alt="avatar icon" class="input-icon">
-                    <input type="text" id="heroName" placeholder="Nombre de tu Héroe" required>
-                </div>
-                <button type="submit" class="submit-btn">Crear Cuenta y Entrar</button>
-                <a href="login.html" class="back-link">&lt; Volver al Inicio</a>
+                <button type="submit" class="submit-btn">¡Empezar a Jugar!</button>
             </form>
         </div>
+        <!-- Panel Derecho: Selector de Color -->
         <div class="avatar-panel">
             <div class="avatar-switcher">
                 <button id="prev-btn" class="arrow-btn">&lt;</button>
                 <div class="avatar-display">
-                    <span id="avatar-name-placeholder">Selección de personaje</span>
+                    <!-- La imagen de la mascota cambiará aquí -->
+                    <img id="pet-image-preview" src="images/pet_blue.png" alt="Vista previa de la mascota">
                 </div>
                 <button id="next-btn" class="arrow-btn">&gt;</button>
             </div>
         </div>
     </main>
-    <script src="js/auth.js"></script>
+    <!-- Nuevo script para esta página -->
+    <script src="js/pet-creator.js"></script>
 </body>
 </html>

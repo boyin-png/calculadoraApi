@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Covis Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="game-page">
+    <!-- Pantalla de Carga -->
+    <div id="loading-screen" class="loading-overlay">
+        <p>Cargando tu partida...</p>
+    </div>
+
+    <!-- Contenedor para Crear Mascota (inicialmente oculto) -->
+    <main id="pet-creation-section" class="creation-container hidden">
+        <div class="form-panel">
+            <h1 class="title">Crea tu Mascota</h1>
+            <p class="subtitle">¡Todo héroe necesita un compañero!</p>
+            <form id="create-pet-form">
+                <p id="error-message" class="error-text"></p>
+                <div class="input-wrapper">
+                    <img src="images/icon-leaf.svg" alt="leaf icon" class="input-icon">
+                    <input type="text" id="petName" placeholder="Elige un nombre para tu mascota" required>
+                </div>
+                <button type="submit" class="submit-btn">¡Empezar a Jugar!</button>
+            </form>
+        </div>
+        <div class="avatar-panel">
+            <div class="avatar-switcher">
+                <button id="prev-pet-btn" class="arrow-btn">&lt;</button>
+                <div class="avatar-display">
+                    <img id="pet-image-preview" src="images/pet_blue.png" alt="Vista previa de la mascota">
+                </div>
+                <button id="next-pet-btn" class="arrow-btn">&gt;</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Contenedor del Juego Principal (inicialmente oculto) -->
+    <div id="game-container" class="hidden">
+        <!-- Aquí irá la interfaz del Tamagotchi -->
+        <h1>¡Bienvenido al Juego!</h1>
+        <p>Aquí aparecerá tu mascota y las acciones.</p>
+        <button id="logout-btn">Cerrar Sesión</button>
+    </div>
+
+    <script src="js/game.js"></script>
+</body>
+</html>
