@@ -121,7 +121,7 @@ body.register-page, body.game-page {
 }
 
 .icon-btn {
-    background: rgba(255,255,255,0.2);
+    background: var(--color-button-blue);
     border: none;
     border-radius: 50%;
     width: 40px;
@@ -129,11 +129,14 @@ body.register-page, body.game-page {
     font-size: 1.2rem;
     cursor: pointer;
     transition: all 0.3s ease;
+    color: white;
+    box-shadow: 0 2px 8px rgba(46, 154, 254, 0.3);
 }
 
 .icon-btn:hover {
-    background: rgba(255,255,255,0.3);
+    background: var(--color-button-shadow);
     transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(46, 154, 254, 0.4);
 }
 
 .pet-selector {
@@ -597,16 +600,20 @@ body.dashboard-page {
 }
 
 .stats-section {
-    background: rgba(255,255,255,0.1);
-    border-radius: 20px;
-    padding: 2rem;
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 30px;
+    padding: 3rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    border: 2px solid white;
 }
 
 .stats-section h3 {
     margin: 0 0 1.5rem 0;
     font-size: 1.8rem;
     text-align: center;
+    color: var(--color-text-dark);
+    font-weight: 900;
 }
 
 .stats-grid {
@@ -616,14 +623,21 @@ body.dashboard-page {
 }
 
 .stat-card {
-    background: rgba(255,255,255,0.1);
-    border-radius: 15px;
+    background: var(--color-green-soft);
+    border-radius: 20px;
     padding: 1.5rem;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
+    border: 4px dashed rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .stat-icon {
@@ -633,22 +647,40 @@ body.dashboard-page {
 .stat-number {
     font-size: 2rem;
     font-weight: 900;
+    color: var(--color-text-dark);
 }
 
 .stat-label {
     font-size: 0.9rem;
-    opacity: 0.8;
+    color: #6c757d;
+    font-weight: 600;
 }
 
 .empty-pets {
     text-align: center;
     padding: 3rem;
-    opacity: 0.8;
+    background: var(--color-green-soft);
+    border-radius: 20px;
+    border: 4px dashed rgba(255, 255, 255, 0.8);
+    color: var(--color-text-dark);
+    min-width: 350px;
+    flex-shrink: 0;
 }
 
 .empty-pets-icon {
     font-size: 4rem;
     margin-bottom: 1rem;
+}
+
+.empty-pets h3 {
+    margin: 0 0 0.5rem 0;
+    color: var(--color-text-dark);
+    font-weight: 700;
+}
+
+.empty-pets p {
+    margin: 0;
+    color: #6c757d;
 }
 
 /* --- Responsividad --- */
@@ -671,8 +703,15 @@ body.dashboard-page {
         text-align: center; 
     }
     .hero-info h1 { font-size: 2rem; }
-    .pets-grid { grid-template-columns: 1fr; }
+    .pets-grid { 
+        flex-direction: column;
+        overflow-x: visible;
+        align-items: center;
+    }
+    .pet-card { min-width: 100%; max-width: 350px; }
+    .empty-pets { min-width: 100%; max-width: 350px; }
     .stats-grid { grid-template-columns: repeat(3, 1fr); }
+    .pets-section, .stats-section { padding: 2rem; }
 }
 
 .pet-card {
