@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import connectDB from './config/db.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 // Importamos TODOS los controladores
 import authController from './controllers/authController.js';
@@ -15,6 +17,11 @@ connectDB();
 
 const app = express();
 const port = process.env.PORT || 3001;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Sirve los archivos estáticos (HTML, CSS, JS, imágenes) desde la carpeta 'frontend'
+app.use(express.static(path.join(__dirname, 'frontend')));
 
 app.use(cors());
 app.use(express.json());
@@ -109,6 +116,11 @@ app.use('/api/game', gameController);
 
 app.get('/', (req, res) => {
     res.send('API funcionando. Visita /api-docs para la documentación interactiva.');
+});
+
+// Esta ruta de captura debe ir DESPUÉS de todas tus rutas de /api
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'login.html'));
 });
 
 app.listen(port, () => {
