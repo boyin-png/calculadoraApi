@@ -37,8 +37,23 @@ export const adoptPetForUser = async (heroId, petId, userId) => {
 export const getAllPetsForUser = (userId) => {
     return petRepository.findPetsByUserId(userId);
 };
-export const addPetForUser = (petData, userId) => {
-    return petRepository.createPetForUser(petData, userId);
+export const addPetForUser = async (petData, userId) => {
+    // 1. Crear la mascota
+    const pet = await petRepository.createPetForUser(petData, userId);
+    
+    // 2. Buscar el héroe del usuario para auto-adopción
+    const hero = await Hero.findOne({ user: userId });
+    if (hero) {
+        // 3. Auto-adoptar la mascota recién creada
+        pet.ownerId = hero._id;
+        hero.pets.push(pet._id);
+        
+        // 4. Guardar los cambios
+        await pet.save();
+        await hero.save();
+    }
+    
+    return pet;
 };
 export const updatePetForUser = (petId, petData, userId) => {
     return petRepository.updatePet(petId, petData, userId);

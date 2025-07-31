@@ -96,6 +96,23 @@
                 </form>
             </div>
         </div>
+
+        <!-- Modal para gestionar mascota -->
+        <div id="pet-manage-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Gestionar Mascota</h3>
+                    <button id="close-pet-manage" class="close-btn">✕</button>
+                </div>
+                <div class="pet-manage-info">
+                    <h4 id="manage-pet-name"></h4>
+                    <p id="manage-pet-details"></p>
+                </div>
+                <div class="modal-actions">
+                    <button id="delete-pet-btn" class="delete-btn">Eliminar Mascota</button>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script src="js/dashboard.js"></script>

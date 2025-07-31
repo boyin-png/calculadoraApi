@@ -89,6 +89,13 @@ function mostrarMascotas() {
         `;
         
         petCard.addEventListener('click', () => jugarConMascota(mascota._id));
+        
+        // Agregar botón de gestión (clic derecho o mantener presionado)
+        petCard.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            abrirGestionMascota(mascota, index);
+        });
+        
         petsGrid.appendChild(petCard);
         
         // Cargar estado de cada mascota
@@ -125,14 +132,29 @@ async function cargarEstadoMascota(petId, index) {
             const health = estado.health || 100;
             const happiness = estado.happiness || 100;
             const hunger = estado.hunger || 0;
+            const isDead = estado.hp <= 0;
             
             const healthElement = document.getElementById(`health-${index}`);
             const happinessElement = document.getElementById(`happiness-${index}`);
             const hungerElement = document.getElementById(`hunger-${index}`);
+            const petCard = document.querySelector(`.pet-card:nth-child(${index + 1})`);
             
             if (healthElement) healthElement.textContent = `${health}%`;
             if (happinessElement) happinessElement.textContent = `${happiness}%`;
             if (hungerElement) hungerElement.textContent = `${hunger}%`;
+            
+            // Marcar visualmente si está muerta
+            if (petCard) {
+                if (isDead) {
+                    petCard.style.opacity = '0.6';
+                    petCard.style.filter = 'grayscale(100%)';
+                    petCard.title = 'Esta mascota está muerta. Ve al juego para revivirla.';
+                } else {
+                    petCard.style.opacity = '1';
+                    petCard.style.filter = 'none';
+                    petCard.title = 'Clic para jugar con esta mascota';
+                }
+            }
         }
     } catch (err) {
         console.error('Error cargando estado de mascota:', err);
@@ -192,12 +214,16 @@ function configurarEventos() {
 }
 
 function configurarModales() {
-    // Cerrar modal
+    // Cerrar modales
     document.getElementById('close-settings').addEventListener('click', cerrarModal);
+    document.getElementById('close-pet-manage').addEventListener('click', cerrarModal);
     
     // Formulario de configuración de héroe
     document.getElementById('hero-settings-form').addEventListener('submit', guardarConfiguracionHeroe);
     document.getElementById('delete-hero-btn').addEventListener('click', eliminarHeroe);
+    
+    // Gestión de mascotas
+    document.getElementById('delete-pet-btn').addEventListener('click', eliminarMascotaSeleccionada);
 }
 
 function abrirConfiguracionHeroe() {
@@ -245,6 +271,11 @@ async function guardarConfiguracionHeroe(e) {
 }
 
 async function eliminarHeroe() {
+    if (!hero || !hero._id) {
+        mostrarMensaje('Error: No se encontró información del héroe', 'error');
+        return;
+    }
+    
     if (!confirm('¿Estás seguro? Esto eliminará tu avatar y todas tus mascotas.')) return;
     
     try {
@@ -269,6 +300,47 @@ function cerrarModal() {
     document.querySelectorAll('.modal').forEach(modal => {
         modal.classList.add('hidden');
     });
+}
+
+// Variables para gestión de mascotas
+let mascotaSeleccionada = null;
+
+function abrirGestionMascota(mascota, index) {
+    mascotaSeleccionada = mascota;
+    document.getElementById('manage-pet-name').textContent = mascota.name;
+    document.getElementById('manage-pet-details').textContent = `${mascota.animal} • ${mascota.superpower}`;
+    document.getElementById('pet-manage-modal').classList.remove('hidden');
+}
+
+async function eliminarMascotaSeleccionada() {
+    if (!mascotaSeleccionada) {
+        mostrarMensaje('Error: No hay mascota seleccionada', 'error');
+        return;
+    }
+    
+    if (!confirm(`¿Estás seguro de que quieres eliminar a ${mascotaSeleccionada.name}? Esta acción no se puede deshacer.`)) return;
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/pets/${mascotaSeleccionada._id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || 'No se pudo eliminar la mascota');
+        }
+        
+        cerrarModal();
+        mostrarMensaje(`${mascotaSeleccionada.name} ha sido eliminada`, 'success');
+        
+        // Recargar la lista de mascotas
+        await cargarMascotas();
+        
+        mascotaSeleccionada = null;
+    } catch (err) {
+        mostrarMensaje(err.message, 'error');
+    }
 }
 
 function mostrarMensaje(mensaje, tipo) {

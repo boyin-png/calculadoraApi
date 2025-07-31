@@ -395,6 +395,11 @@ async function guardarConfiguracionHeroe(e) {
 }
 
 async function eliminarHeroe() {
+    if (!hero || !hero._id) {
+        mostrarMensaje('Error: No se encontró información del héroe', 'error');
+        return;
+    }
+    
     if (!confirm('¿Estás seguro? Esto eliminará tu avatar y todas tus mascotas.')) return;
     
     try {

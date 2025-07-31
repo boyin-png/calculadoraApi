@@ -54,14 +54,30 @@ export function deselectPet(userId) {
 }
 
 export async function getPetStatus(userId) {
-    const { pet } = await getFullState(userId);
+    // Primero simular el paso del tiempo
+    await simulateTimeDecay(userId);
+    
+    const { pet, owner } = await getFullState(userId);
     let lifePhase;
     if (pet.hp <= 0) lifePhase = 'Muerto 💀';
     else if (pet.health_status === 'enfermo') lifePhase = 'Enfermo 🤢';
     else if (pet.hp <= (pet.maxHp * 0.5)) lifePhase = 'Preocupante 😟';
     else if (pet.mood === 'aburrido') lifePhase = 'Saludable pero aburrido 😐';
     else lifePhase = 'Excelente y entretenido 😄';
-    return { name: pet.name, hp: `${pet.hp}/${pet.maxHp}`, status: lifePhase, fashion: pet.fashion_status, accessories: pet.accessories };
+    
+    return { 
+        name: pet.name, 
+        hp: pet.hp,
+        maxHp: pet.maxHp,
+        hpText: `${pet.hp}/${pet.maxHp}`, 
+        status: lifePhase, 
+        fashion: pet.fashion_status, 
+        accessories: pet.accessories,
+        health: Math.round((pet.hp / pet.maxHp) * 100),
+        happiness: pet.mood === 'entretenido' ? 100 : 50,
+        hunger: pet.health_status === 'enfermo' ? 80 : 20,
+        ownerCoins: owner ? owner.coins : 0
+    };
 }
 
 export async function getAvailableFoods() {
@@ -160,4 +176,33 @@ export async function revivePet(userId) {
     await owner.save();
     await pet.save();
     return { message: `✨ ¡Milagro! Reviviste a ${pet.name}.`, petStatus: await getPetStatus(userId) };
+}
+
+// Función para simular el paso del tiempo y decaimiento natural
+export async function simulateTimeDecay(userId) {
+    const { pet } = await getFullState(userId);
+    if (!pet || pet.hp <= 0) return; // No procesar si ya está muerto
+    
+    const now = new Date();
+    const lastUpdate = pet.lastUpdate || new Date();
+    const timeDiff = now - lastUpdate;
+    
+    // Cada 10 minutos reales = 1 hora en el juego
+    const hoursPassedInGame = Math.floor(timeDiff / (10 * 60 * 1000));
+    
+    if (hoursPassedInGame > 0) {
+        // Reducir HP gradualmente (1 punto cada hora del juego)
+        pet.hp = Math.max(0, pet.hp - hoursPassedInGame);
+        
+        // Si el humor es "entretenido" se mantiene más tiempo
+        if (pet.mood !== 'entretenido' && hoursPassedInGame > 2) {
+            pet.mood = 'aburrido';
+        }
+        
+        // Actualizar timestamp
+        pet.lastUpdate = now;
+        await pet.save();
+    }
+    
+    return pet;
 }
