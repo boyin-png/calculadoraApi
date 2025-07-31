@@ -1,4 +1,8 @@
-createPetForm.addEventListener('submit', async (e) => {
+const API_BASE_URL = ""; // O la URL de tu backend
+const authToken = localStorage.getItem('authToken');
+if (!authToken) {
+    window.location.href = 'login.html';
+}createPetForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     errorMessage.textContent = '';
     submitButton.disabled = true;
