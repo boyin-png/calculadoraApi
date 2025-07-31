@@ -148,11 +148,30 @@ body.register-page, body.game-page {
 
 /* --- INTERFAZ TIPO POU --- */
 .game-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(145deg, #a8e6cf, #88d8a3);
     color: white;
-    padding: 1rem 2rem;
-    border-radius: 20px 20px 0 0;
-    margin-bottom: 1rem;
+    padding: 1.5rem 2rem;
+    border-radius: 25px;
+    margin-bottom: 1.5rem;
+    box-shadow: 
+        0 8px 0 #7bccc4,
+        0 12px 25px rgba(123, 204, 196, 0.4),
+        inset 0 3px 0 rgba(255,255,255,0.3),
+        inset 0 -2px 0 rgba(0,0,0,0.1);
+    border: 3px solid rgba(255,255,255,0.2);
+    position: relative;
+}
+
+.game-header::before {
+    content: '';
+    position: absolute;
+    top: 8%;
+    left: 5%;
+    width: 90%;
+    height: 40%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+    border-radius: 25px;
+    pointer-events: none;
 }
 
 .user-info {
@@ -316,61 +335,64 @@ body.register-page, body.game-page {
 
 .action-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
     max-width: 600px;
     margin: 0 auto;
+    padding: 1rem;
 }
 
 .action-btn {
     background: linear-gradient(145deg, #a8e6cf, #88d8a3);
     color: white;
     border: none;
-    border-radius: 25px;
+    border-radius: 20px;
     padding: 1.5rem 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.8rem;
     cursor: pointer;
     transition: all 0.1s ease-in-out;
     box-shadow: 
-        0 6px 0 #7bccc4,
-        0 10px 20px rgba(123, 204, 196, 0.3),
-        inset 0 2px 0 rgba(255,255,255,0.3),
+        0 8px 0 #7bccc4,
+        0 12px 25px rgba(123, 204, 196, 0.4),
+        inset 0 3px 0 rgba(255,255,255,0.4),
         inset 0 -2px 0 rgba(0,0,0,0.1);
     position: relative;
-    border: 2px solid rgba(255,255,255,0.2);
+    border: 3px solid rgba(255,255,255,0.3);
+    min-height: 120px;
+    aspect-ratio: 1;
 }
 
 .action-btn::before {
     content: '';
     position: absolute;
-    top: 8%;
-    left: 15%;
-    width: 70%;
-    height: 30%;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(255,255,255,0));
-    border-radius: 25px;
+    top: 12%;
+    left: 20%;
+    width: 60%;
+    height: 40%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+    border-radius: 20px;
     pointer-events: none;
 }
 
 .action-btn:hover {
     background: linear-gradient(145deg, #b8f6df, #98e8b3);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     box-shadow: 
-        0 8px 0 #7bccc4,
-        0 12px 25px rgba(123, 204, 196, 0.4),
-        inset 0 2px 0 rgba(255,255,255,0.4),
+        0 11px 0 #7bccc4,
+        0 15px 30px rgba(123, 204, 196, 0.5),
+        inset 0 3px 0 rgba(255,255,255,0.5),
         inset 0 -2px 0 rgba(0,0,0,0.1);
 }
 
 .action-btn:active {
-    transform: translateY(4px);
+    transform: translateY(5px);
     box-shadow: 
-        0 2px 0 #7bccc4,
-        0 6px 15px rgba(123, 204, 196, 0.2),
-        inset 0 2px 0 rgba(255,255,255,0.2),
+        0 3px 0 #7bccc4,
+        0 6px 15px rgba(123, 204, 196, 0.3),
+        inset 0 2px 0 rgba(255,255,255,0.3),
         inset 0 -1px 0 rgba(0,0,0,0.1);
 }
 
@@ -880,7 +902,7 @@ body.dashboard-page {
     .pet-room { padding: 1.5rem; }
     .pet-environment { width: 150px; height: 150px; }
     .pet-main-img { width: 120px; height: 120px; }
-    .action-grid { grid-template-columns: repeat(2, 1fr); }
+    .action-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
     .modal-content { padding: 1.5rem; }
     
     .dashboard-container { padding: 1rem; }

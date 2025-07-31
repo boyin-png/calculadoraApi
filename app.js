@@ -113,6 +113,12 @@ app.use('/api/heroes', heroController);
 app.use('/api/pets', petController);
 app.use('/api/game', gameController);
 
+// Ruta específica para la raíz
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'login.html'));
+});
+
+// Todas las demás rutas van al login
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'login.html'));
 });
