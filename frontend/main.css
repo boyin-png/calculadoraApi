@@ -16,7 +16,8 @@ body {
 
 /* --- ESTILOS PARA LA PÁGINA DE LOGIN (INICIO) --- */
 body.login-page {
-    background: url('/frontend/images/fondo.jpg'); 
+    /* RUTA CORREGIDA */
+    background: url('/images/fondo.jpg'); 
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;

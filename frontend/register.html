@@ -4,42 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crea tu Héroe - Covis Simulator</title>
-    
-    <!-- Fuentes de Google para la estética amigable -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
-    
-    <!-- La ruta al CSS unificado -->
-    <link rel="stylesheet" href="/frontend/main.css">
+    <!-- RUTA CORREGIDA -->
+    <link rel="stylesheet" href="/styles/main.css">
 </head>
 <body class="register-page">
-
     <main class="creation-container">
-        <!-- Panel Izquierdo: Formulario -->
         <div class="form-panel">
             <h1 class="title">Crea tu Héroe</h1>
-
             <form id="register-form">
                 <div class="input-wrapper">
-                    <img src="/frontend/images/icon-leaf.svg" alt="leaf icon" class="input-icon">
+                    <!-- RUTA CORREGIDA -->
+                    <img src="/images/icon-leaf.svg" alt="leaf icon" class="input-icon">
                     <input type="text" id="username" placeholder="Elige un nombre de usuario" required>
                 </div>
                 <div class="input-wrapper">
-                    <img src="/frontend/images/icon-key.svg" alt="key icon" class="input-icon">
+                    <!-- RUTA CORREGIDA -->
+                    <img src="/images/icon-key.svg" alt="key icon" class="input-icon">
                     <input type="password" id="password" placeholder="Elige una contraseña" required>
                 </div>
                 <div class="input-wrapper">
-                    <img src="/frontend/images/icon-avatar.svg" alt="avatar icon" class="input-icon">
+                    <!-- RUTA CORREGIDA -->
+                    <img src="/images/icon-avatar.svg" alt="avatar icon" class="input-icon">
                     <input type="text" id="heroName" placeholder="Nombre de tu Héroe" required>
                 </div>
-
                 <button type="submit" class="submit-btn">Siguiente</button>
                 <a href="login.html" class="back-link">&lt; Volver al Inicio</a>
             </form>
         </div>
-
-        <!-- Panel Derecho: Selector de Avatar -->
         <div class="avatar-panel">
             <div class="avatar-switcher">
                 <button id="prev-btn" class="arrow-btn">&lt;</button>
@@ -50,8 +44,7 @@
             </div>
         </div>
     </main>
-
-    <!-- La ruta al JS unificado -->
-    <script src="/frontend/auth.js"></script>
+    <!-- RUTA CORREGIDA -->
+    <script src="/js/auth.js"></script>
 </body>
 </html>
