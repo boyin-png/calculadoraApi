@@ -1,5 +1,5 @@
 const API_BASE_URL = ""; // O pon aquí la URL de tu backend en Render
-const authToken = localStorage.getItem('token');
+const authToken = localStorage.getItem('authToken'); // ¡Misma clave!
 if (!authToken) {
     window.location.href = 'login.html';
 }

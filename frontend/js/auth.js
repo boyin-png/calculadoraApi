@@ -1,38 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
     const API_BASE_URL = ''; // URL vacía para que funcione en local y en Render
 
-    // --- FUNCIÓN DE REDIRECCIÓN ---
-    // Decide si ir al juego o a crear una mascota
-    async function redirigirSegunMascota(token) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/pets`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
+    // --- LÓGICA PARA MOSTRAR/OCULTAR FORMULARIO DE LOGIN ---
+    const showLoginBtn = document.getElementById('show-login-btn');
+    const backToWelcomeBtn = document.getElementById('back-to-welcome');
+    const welcomeBox = document.getElementById('welcome-box');
+    const loginFormContainer = document.getElementById('login-form-container');
 
-            // Si el backend responde con error (ej. 401), asumimos que hay que loguearse
-            if (!response.ok) {
-                // Si la sesión no es válida, mejor ir a login
-                if (response.status === 401 || response.status === 403) {
-                   window.location.href = 'login.html';
-                   return;
-                }
-                // Para otros errores, intentamos crear mascota por si acaso
-                throw new Error('Error del servidor al verificar mascota.');
-            }
+    if (showLoginBtn && loginFormContainer && welcomeBox) {
+        showLoginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            welcomeBox.classList.add('hidden');
+            loginFormContainer.classList.remove('hidden');
+        });
+    }
 
-            const mascotas = await response.json();
-            if (mascotas.length === 0) {
-                // Si no hay mascotas, a crearlas!
-                window.location.href = 'create-pet.html';
-            } else {
-                // Si ya hay mascota, al juego!
-                window.location.href = 'index.html';
-            }
-        } catch (error) {
-            console.error(error);
-            // Si algo falla, es más seguro enviar a crear una mascota que al juego.
-            window.location.href = 'create-pet.html';
-        }
+    if (backToWelcomeBtn && loginFormContainer && welcomeBox) {
+        backToWelcomeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginFormContainer.classList.add('hidden');
+            welcomeBox.classList.remove('hidden');
+        });
     }
 
     // --- LÓGICA PARA LOGIN.HTML ---
@@ -61,9 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error(data.message || 'Error de autenticación.');
                 }
                 
-                // Usamos 'authToken' como clave consistente
+                // Guardamos el token y vamos DIRECTAMENTE a crear mascota
                 localStorage.setItem('authToken', data.token); 
-                await redirigirSegunMascota(data.token);
+                window.location.href = 'create-pet.html';
 
             } catch (error) {
                 errorMessage.textContent = error.message;
@@ -111,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 if (!heroResponse.ok) throw new Error(`Creación de héroe fallida: ${(await heroResponse.json()).message}`);
                 
-                // Al registrarse, siempre vamos a crear mascota
+                // Al registrarse, SIEMPRE vamos a crear mascota
                 window.location.href = 'create-pet.html';
 
             } catch (error) {
