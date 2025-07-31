@@ -1,61 +1,9 @@
-createPetForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const petName = document.getElementById('petName').value;
-    const petAnimal = document.getElementById('petAnimal').value; // <- NUEVO
-    const petSuperpower = document.getElementById('petSuperpower').value; // <- NUEVO
-    const errorMessage = document.getElementById('error-message');
-    const submitButton = createPetForm.querySelector('.submit-btn');
-    errorMessage.textContent = '';
-    submitButton.disabled = true;
-    submitButton.textContent = 'Creando...';
-
-    try {
-        // Objeto actualizado con los datos del formulario
-        const petData = { 
-            name: petName, 
-            animal: petAnimal, 
-            superpower: petSuperpower 
-        };
-
-        await apiFetch('/api/pets', {
-            method: 'POST',
-            body: JSON.stringify(petData)
-        });
-        // Recargamos la página para que ahora detecte que ya hay una mascota
-        window.location.reload();
-    } catch (error) {
-        errorMessage.textContent = error.message;
-        submitButton.disabled = false;
-        submitButton.textContent = '¡Empezar a Jugar!';
-    }
-});
-
-async function cargarMascota() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/api/pets`, {
-            headers: { 'Authorization': `Bearer ${authToken}` }
-        });
-        if (!response.ok) throw new Error('No se pudo cargar la mascota');
-        const mascotas = await response.json();
-        if (mascotas.length === 0) return; // No hay mascota
-
-        const mascota = mascotas[0]; // Si solo hay una
-        document.getElementById('pet-name').textContent = mascota.name;
-        document.getElementById('pet-animal').textContent = mascota.animal;
-        document.getElementById('pet-superpower').textContent = mascota.superpower;
-        // Cambia la imagen según el animal si tienes varias imágenes
-        // document.getElementById('pet-image').src = `images/pet_${mascota.animal.toLowerCase()}.png`;
-
-        document.getElementById('pet-card').classList.remove('hidden');
-    } catch (err) {
-        alert(err.message);
-    }
+const API_BASE_URL = ""; // O pon aquí la URL de tu backend en Render
+const authToken = localStorage.getItem('token');
+if (!authToken) {
+    window.location.href = 'login.html';
 }
 
-// Llama a la función cuando cargue el juego
-window.addEventListener('DOMContentLoaded', cargarMascota);
-
-
 async function cargarMascota() {
     try {
         const response = await fetch(`${API_BASE_URL}/api/pets`, {
@@ -63,21 +11,24 @@ async function cargarMascota() {
         });
         if (!response.ok) throw new Error('No se pudo cargar la mascota');
         const mascotas = await response.json();
-        if (mascotas.length === 0) return;
+        if (mascotas.length === 0) {
+            document.getElementById('loading-screen').classList.add('hidden');
+            // Aquí podrías mostrar el formulario de crear mascota si lo deseas
+            return;
+        }
 
         const mascota = mascotas[0];
         document.getElementById('pet-name').textContent = mascota.name;
         document.getElementById('pet-animal').textContent = "Animal: " + mascota.animal;
         document.getElementById('pet-superpower').textContent = "Superpoder: " + mascota.superpower;
-        // Si tienes imágenes diferentes por animal:
-        // document.getElementById('pet-image').src = `images/pet_${mascota.animal.toLowerCase()}.png`;
 
-        // Cargar estado de la mascota
         await cargarEstadoMascota();
 
         document.getElementById('game-container').classList.remove('hidden');
+        document.getElementById('loading-screen').classList.add('hidden');
     } catch (err) {
         alert(err.message);
+        document.getElementById('loading-screen').classList.add('hidden');
     }
 }
 
