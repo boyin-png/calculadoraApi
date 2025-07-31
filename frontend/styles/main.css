@@ -408,10 +408,11 @@ body.register-page, body.game-page {
 /* --- PÁGINA DASHBOARD --- */
 body.dashboard-page {
     font-family: var(--font-main);
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: var(--color-background-ac);
+    color: var(--color-text-dark);
     min-height: 100vh;
     overflow-y: auto;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
 .dashboard-container {
@@ -421,85 +422,115 @@ body.dashboard-page {
 }
 
 .dashboard-header {
-    background: rgba(255,255,255,0.1);
-    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 30px;
     padding: 2rem;
     margin-bottom: 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    border: 2px solid white;
 }
 
 .hero-info h1 {
     margin: 0;
     font-size: 2.5rem;
     font-weight: 900;
+    color: var(--color-text-dark);
 }
 
 .hero-info p {
     margin: 0.5rem 0 0 0;
     font-size: 1.2rem;
-    opacity: 0.9;
+    color: #6c757d;
 }
 
 .pets-section {
-    background: rgba(255,255,255,0.1);
-    border-radius: 20px;
-    padding: 2rem;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 30px;
+    padding: 3rem;
     margin-bottom: 2rem;
-    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    border: 2px solid white;
 }
 
 .pets-section h2 {
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 2rem 0;
     font-size: 2rem;
     text-align: center;
+    color: var(--color-text-dark);
+    font-weight: 900;
 }
 
 .pets-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: flex;
     gap: 1.5rem;
+    overflow-x: auto;
+    padding: 1rem 0;
     margin-bottom: 2rem;
+    scroll-snap-type: x mandatory;
+}
+
+.pets-grid::-webkit-scrollbar {
+    height: 8px;
+}
+
+.pets-grid::-webkit-scrollbar-track {
+    background: var(--color-green-soft);
+    border-radius: 4px;
+}
+
+.pets-grid::-webkit-scrollbar-thumb {
+    background: var(--color-button-blue);
+    border-radius: 4px;
 }
 
 .pet-card {
-    background: rgba(255,255,255,0.2);
-    border-radius: 15px;
-    padding: 1.5rem;
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
     text-align: center;
     transition: all 0.3s ease;
     cursor: pointer;
-    border: 2px solid transparent;
+    border: 4px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    min-width: 280px;
+    flex-shrink: 0;
+    scroll-snap-align: start;
 }
 
 .pet-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(255,255,255,0.3);
-    background: rgba(255,255,255,0.25);
+    transform: translateY(-8px);
+    border-color: var(--color-button-blue);
+    box-shadow: 0 8px 25px rgba(46, 154, 254, 0.2);
 }
 
 .pet-card-image {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.2);
-    margin: 0 auto 1rem;
+    background: var(--color-green-soft);
+    margin: 0 auto 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3rem;
+    font-size: 4rem;
+    border: 4px dashed rgba(255, 255, 255, 0.8);
 }
 
 .pet-card h3 {
     margin: 0 0 0.5rem 0;
     font-size: 1.5rem;
+    color: var(--color-text-dark);
+    font-weight: 700;
 }
 
 .pet-card p {
     margin: 0;
-    opacity: 0.8;
+    color: #6c757d;
 }
 
 .pet-status {
@@ -520,25 +551,41 @@ body.dashboard-page {
 }
 
 .create-pet-btn {
-    background: linear-gradient(135deg, #4CAF50, #45a049);
+    background: var(--color-button-blue);
     color: white;
     border: none;
-    border-radius: 15px;
-    padding: 2rem 3rem;
+    border-radius: 50px;
+    padding: 1rem 2rem;
     font-size: 1.2rem;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.1s ease-in-out;
     display: inline-flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 0 var(--color-button-shadow);
+    position: relative;
+}
+
+.create-pet-btn::before {
+    content: '';
+    position: absolute;
+    top: 5%;
+    left: 10%;
+    width: 80%;
+    height: 40%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(255,255,255,0));
+    border-radius: 50px;
 }
 
 .create-pet-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+    background: var(--color-button-shadow);
+}
+
+.create-pet-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 0px 0 var(--color-button-shadow);
 }
 
 .create-icon {
