@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Covis Simulator - Bienvenido</title>
+    <!-- La ruta al CSS unificado -->
+    <link rel="stylesheet" href="/frontend/main.css">
+</head>
+<body class="login-page">
+    <!-- Contenedor principal centrado -->
+    <main class="main-container">
+        
+        <!-- Caja de bienvenida (ahora invisible, solo para organizar) -->
+        <div id="welcome-box" class="welcome-card">
+            <!-- Espacio para tu logo -->
+            <div class="logo-container">
+                <img src="/frontend/images/covisgof.png" alt="Logo de Covis Simulator">
+            </div>
+
+            <!-- Contenedor para los botones de acción -->
+            <div class="button-container">
+                <!-- Botón para Iniciar Sesión -->
+                <a href="#" id="show-login-btn">
+                    <img src="/frontend/images/boton1.png" alt="Iniciar Sesión">
+                </a>
+
+                <!-- Botón para Crear Cuenta -->
+                <a href="register.html">
+                    <img src="/frontend/images/boton2.png" alt="Crear Cuenta">
+                </a>
+            </div>
+        </div>
+
+        <!-- Formulario de Login (inicialmente oculto, con su propio fondo) -->
+        <form id="login-form" class="hidden">
+            <h2>Iniciar Sesión</h2>
+            <p id="error-message" class="error-text"></p>
+            <div class="input-group">
+                <input type="text" id="username" placeholder="Nombre de usuario" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Contraseña" required>
+            </div>
+            <button type="submit" class="submit-button">Entrar</button>
+            <a href="#" id="back-to-welcome" class="back-link">‹ Volver</a>
+        </form>
+
+    </main>
+
+    <!-- La ruta al JS unificado -->
+    <script src="/frontend/js/auth.js"></script>
+</body>
+</html>
