@@ -72,6 +72,13 @@ async function seleccionarMascota(index) {
     // Actualizar interfaz
     document.getElementById('pet-name').textContent = mascota.name;
     
+    // Actualizar imagen de la mascota si está disponible
+    const petImg = document.getElementById('pet-image');
+    if (petImg && mascota.animalImage) {
+        petImg.src = `images/${mascota.animalImage}`;
+        petImg.alt = `${mascota.name} - ${mascota.animal}`;
+    }
+    
     // Seleccionar mascota en el backend
     try {
         await fetch(`${API_BASE_URL}/api/game/select/${mascota._id}`, {

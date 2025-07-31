@@ -161,17 +161,7 @@ async function cargarEstadoMascota(petId, index) {
     }
 }
 
-function getAnimalEmoji(animal) {
-    const emojis = {
-        'Perro': '🐕',
-        'Gato': '🐱',
-        'Hámster': '🐹',
-        'Conejo': '🐰',
-        'Pájaro': '🐦',
-        'Pez': '🐠'
-    };
-    return emojis[animal] || '🐾';
-}
+// Función eliminada - ahora usamos imágenes reales de los animales
 
 function actualizarEstadisticas() {
     document.getElementById('total-pets').textContent = mascotas.length;
