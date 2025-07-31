@@ -1,6 +1,39 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // URL vacía para que funcione en cualquier servidor (local o Render)
-    const API_BASE_URL = '';
+    const API_BASE_URL = ''; // URL vacía para que funcione en local y en Render
+
+    // --- FUNCIÓN DE REDIRECCIÓN ---
+    // Decide si ir al juego o a crear una mascota
+    async function redirigirSegunMascota(token) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/pets`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            // Si el backend responde con error (ej. 401), asumimos que hay que loguearse
+            if (!response.ok) {
+                // Si la sesión no es válida, mejor ir a login
+                if (response.status === 401 || response.status === 403) {
+                   window.location.href = 'login.html';
+                   return;
+                }
+                // Para otros errores, intentamos crear mascota por si acaso
+                throw new Error('Error del servidor al verificar mascota.');
+            }
+
+            const mascotas = await response.json();
+            if (mascotas.length === 0) {
+                // Si no hay mascotas, a crearlas!
+                window.location.href = 'create-pet.html';
+            } else {
+                // Si ya hay mascota, al juego!
+                window.location.href = 'index.html';
+            }
+        } catch (error) {
+            console.error(error);
+            // Si algo falla, es más seguro enviar a crear una mascota que al juego.
+            window.location.href = 'create-pet.html';
+        }
+    }
 
     // --- LÓGICA PARA LOGIN.HTML ---
     const loginForm = document.getElementById('login-form');
@@ -23,21 +56,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify({ username, password }),
                 });
 
-                // Leemos la respuesta como JSON
                 const data = await response.json();
-
-                // Si la respuesta no fue exitosa (status no es 2xx)
                 if (!response.ok) {
-                    // Lanzamos un error con el mensaje que viene del backend
-                    throw new Error(data.message || 'Error desconocido del servidor.');
+                    throw new Error(data.message || 'Error de autenticación.');
                 }
                 
-                // Si todo sale bien, guardamos el token y redirigimos
-                localStorage.setItem('authToken', data.token);
-                window.location.href = 'index.html';
+                // Usamos 'authToken' como clave consistente
+                localStorage.setItem('authToken', data.token); 
+                await redirigirSegunMascota(data.token);
 
             } catch (error) {
-                // Mostramos el mensaje de error en la pantalla
                 errorMessage.textContent = error.message;
                 submitButton.disabled = false;
                 submitButton.textContent = 'Entrar';
@@ -46,43 +74,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- LÓGICA PARA REGISTER.HTML ---
-    if (document.body.classList.contains('register-page')) {
-        const registerForm = document.getElementById('register-form');
-        const errorMessage = document.getElementById('error-message');
-        const submitButton = registerForm.querySelector('.submit-btn');
-        
-        const avatarNamePlaceholder = document.getElementById('avatar-name-placeholder');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        
-        const avatarOptions = ["Avatar de Fuego", "Avatar de Planta", "Avatar de Agua"];
-        let currentIndex = 0;
-
-        function updateAvatarDisplay() {
-            if(avatarNamePlaceholder) avatarNamePlaceholder.textContent = avatarOptions[currentIndex];
-        }
-
-        if(prevBtn) prevBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + avatarOptions.length) % avatarOptions.length;
-            updateAvatarDisplay();
-        });
-
-        if(nextBtn) nextBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % avatarOptions.length;
-            updateAvatarDisplay();
-        });
-
-        updateAvatarDisplay();
-
+    const registerForm = document.getElementById('register-form');
+    if (registerForm) {
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            errorMessage.textContent = '';
-            submitButton.disabled = true;
-            submitButton.textContent = 'Creando...';
-
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const heroName = document.getElementById('heroName').value;
+            const errorMessage = document.getElementById('error-message');
+            const submitButton = registerForm.querySelector('.submit-btn');
+
+            errorMessage.textContent = '';
+            submitButton.disabled = true;
+            submitButton.textContent = 'Creando...';
 
             try {
                 // 1. Registrar usuario
@@ -92,8 +96,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify({ username, password })
                 });
                 const regData = await regResponse.json();
-                if (!regResponse.ok) throw new Error(`Registro: ${regData.message}`);
+                if (!regResponse.ok) throw new Error(`Registro fallido: ${regData.message}`);
                 
+                // Usamos 'authToken' como clave consistente
                 const authToken = regData.token;
                 localStorage.setItem('authToken', authToken);
 
@@ -104,9 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: { 'Authorization': `Bearer ${authToken}`, 'Content-Type': 'application/json' },
                     body: JSON.stringify(heroData)
                 });
-                if (!heroResponse.ok) throw new Error(`Héroe: ${(await heroResponse.json()).message}`);
+                if (!heroResponse.ok) throw new Error(`Creación de héroe fallida: ${(await heroResponse.json()).message}`);
                 
-                window.location.href = 'index.html';
+                // Al registrarse, siempre vamos a crear mascota
+                window.location.href = 'create-pet.html';
 
             } catch (error) {
                 errorMessage.textContent = error.message;
