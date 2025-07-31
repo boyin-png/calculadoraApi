@@ -1,5 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
     const API_BASE_URL = ''; // URL vacía para que funcione en local y en Render
+    
+    // === SELECCIÓN DE PERSONAJES ===
+    let selectedCharacter = 0; // Por defecto el primer personaje
+    
+    // Configurar selección de personajes si estamos en register.html
+    const characterOptions = document.querySelectorAll('.character-option');
+    if (characterOptions.length > 0) {
+        // Seleccionar el primer personaje por defecto
+        characterOptions[0].classList.add('selected');
+        
+        // Manejar clics en personajes
+        characterOptions.forEach((option, index) => {
+            option.addEventListener('click', () => {
+                // Remover selección anterior
+                characterOptions.forEach(opt => opt.classList.remove('selected'));
+                // Agregar selección actual
+                option.classList.add('selected');
+                selectedCharacter = index;
+            });
+        });
+    }
 
     // --- LÓGICA PARA MOSTRAR/OCULTAR FORMULARIO DE LOGIN ---
     const showLoginBtn = document.getElementById('show-login-btn');
@@ -90,8 +111,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 const authToken = regData.token;
                 localStorage.setItem('authToken', authToken);
 
-                // 2. Crear Héroe
-                const heroData = { name: heroName, power: 'Amor por las mascotas', age: 25, city: 'Pet-polis' };
+                // 2. Crear Héroe con personaje seleccionado
+                const characterNames = ['Héroe Místico', 'Guardián Noble', 'Protector Valiente'];
+                const characterPowers = ['Magia Ancestral', 'Escudo de Honor', 'Fuerza Inquebrantable'];
+                
+                const heroData = { 
+                    name: heroName, 
+                    power: characterPowers[selectedCharacter] || 'Amor por las mascotas', 
+                    age: 25, 
+                    city: 'Pet-polis',
+                    characterType: characterNames[selectedCharacter] || 'Héroe Místico',
+                    characterImage: selectedCharacter
+                };
                 const heroResponse = await fetch(`${API_BASE_URL}/api/heroes`, {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${authToken}`, 'Content-Type': 'application/json' },

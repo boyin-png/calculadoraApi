@@ -61,7 +61,9 @@ export async function selectPet(petId, userId) {
                 age: 25,
                 city: 'Pet-polis',
                 pets: [],
-                coins: 100
+                coins: 100,
+                characterType: 'Héroe Místico',
+                characterImage: 0
             });
             await hero.save();
         }

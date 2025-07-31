@@ -66,7 +66,148 @@ body.register-page, body.game-page {
 }
 
 .form-panel { flex: 1; min-width: 300px; width: 100%; }
-.avatar-panel { flex: 1; min-width: 300px; display: flex; justify-content: center; align-items: center; }
+.avatar-panel { 
+    flex: 1; 
+    min-width: 300px; 
+    display: flex; 
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    padding: 2rem;
+}
+
+.avatar-title {
+    font-family: var(--font-main);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--color-text-dark);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.character-selection {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.character-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 1rem;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 3px solid transparent;
+    min-width: 120px;
+}
+
+.character-option:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.character-option.selected {
+    border-color: var(--color-green-soft);
+    background: linear-gradient(145deg, #a8e6cf, #88d8a3);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.character-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 0.8rem;
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+}
+
+.character-option:hover .character-img {
+    border-color: white;
+    transform: scale(1.05);
+}
+
+.character-option.selected .character-img {
+    border-color: white;
+    transform: scale(1.1);
+}
+
+.character-name {
+    font-family: var(--font-main);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-text-dark);
+    text-align: center;
+    line-height: 1.2;
+}
+
+.character-option.selected .character-name {
+    color: white;
+    font-weight: 700;
+}
+
+.selection-hint {
+    font-family: var(--font-main);
+    font-size: 1rem;
+    color: var(--color-text-dark);
+    text-align: center;
+    opacity: 0.8;
+    margin: 0;
+}
+
+/* === SELECCIÓN DE ANIMALES === */
+.animal-selection {
+    margin-bottom: 1.5rem;
+}
+
+.animal-option {
+    position: relative;
+    overflow: hidden;
+}
+
+.animal-option::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(168, 230, 207, 0.1), rgba(136, 216, 163, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 20px;
+}
+
+.animal-option:hover::before {
+    opacity: 1;
+}
+
+.animal-option.selected::before {
+    opacity: 1;
+    background: linear-gradient(45deg, rgba(168, 230, 207, 0.3), rgba(136, 216, 163, 0.3));
+}
+
+.animal-img {
+    filter: brightness(0.9);
+    transition: all 0.3s ease;
+}
+
+.animal-option:hover .animal-img {
+    filter: brightness(1.1);
+    transform: scale(1.05);
+}
+
+.animal-option.selected .animal-img {
+    filter: brightness(1.2) saturate(1.1);
+    transform: scale(1.1);
+}
 .title { font-family: var(--font-main); font-size: 2.5rem; font-weight: 900; text-align: center; margin-bottom: 1rem; color: var(--color-text-dark); }
 .subtitle { text-align: center; margin-bottom: 2rem; font-size: 1.1rem; color: #6c757d; }
 .input-wrapper { display: flex; align-items: center; margin-bottom: 1rem; background-color: white; border-radius: 50px; padding: 0.5rem 1rem; border: 2px solid #eee; }
@@ -896,6 +1037,10 @@ body.dashboard-page {
 @media (max-width: 768px) {
     .creation-container { flex-direction: column; padding: 1.5rem; height: auto; }
     .form-panel, .avatar-panel { min-width: 100%; }
+.character-selection { flex-direction: column; gap: 1rem; }
+.character-option { min-width: 100px; }
+.character-img { width: 60px; height: 60px; }
+.avatar-title { font-size: 1.5rem; }
     .title { font-size: 2rem; }
     
     .game-header { padding: 0.75rem 1rem; }

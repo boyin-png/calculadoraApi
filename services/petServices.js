@@ -54,7 +54,9 @@ export const addPetForUser = async (petData, userId) => {
             age: 25,
             city: 'Pet-polis',
             pets: [],
-            coins: 100
+            coins: 100,
+            characterType: 'Héroe Místico',
+            characterImage: 0
         });
         await hero.save();
     }

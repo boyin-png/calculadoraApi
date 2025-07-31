@@ -68,7 +68,7 @@ function mostrarMascotas() {
         petCard.className = 'pet-card';
         petCard.innerHTML = `
             <div class="pet-card-image">
-                ${getAnimalEmoji(mascota.animal)}
+                <img src="images/${mascota.animalImage || 'covig.png'}" alt="${mascota.name}" class="pet-avatar-img">
             </div>
             <h3>${mascota.name}</h3>
             <p>${mascota.animal} • ${mascota.superpower}</p>

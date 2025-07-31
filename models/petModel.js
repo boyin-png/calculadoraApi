@@ -15,7 +15,8 @@ const petSchema = new mongoose.Schema({
         lentes: { type: String, default: null },
         ropa: { type: String, default: null }
     },
-    lastUpdate: { type: Date, default: Date.now }
+    lastUpdate: { type: Date, default: Date.now },
+    animalImage: { type: String, default: 'covig.png' } // Imagen por defecto para el perro
 }, { timestamps: true });
 const Pet = mongoose.model('Pet', petSchema);
 export default Pet;

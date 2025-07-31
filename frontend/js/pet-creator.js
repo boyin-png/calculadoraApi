@@ -8,6 +8,29 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    // === SELECCIÓN DE ANIMALES ===
+    let selectedAnimal = 'Perro'; // Por defecto el primer animal
+    
+    // Configurar selección de animales
+    const animalOptions = document.querySelectorAll('.animal-option');
+    if (animalOptions.length > 0) {
+        // Seleccionar el primer animal por defecto
+        animalOptions[0].classList.add('selected');
+        document.getElementById('petAnimal').value = selectedAnimal;
+        
+        // Manejar clics en animales
+        animalOptions.forEach((option) => {
+            option.addEventListener('click', () => {
+                // Remover selección anterior
+                animalOptions.forEach(opt => opt.classList.remove('selected'));
+                // Agregar selección actual
+                option.classList.add('selected');
+                selectedAnimal = option.dataset.animal;
+                document.getElementById('petAnimal').value = selectedAnimal;
+            });
+        });
+    }
+
     const createPetForm = document.getElementById('create-pet-form');
     const errorMessage = document.getElementById('error-message');
     const submitButton = createPetForm.querySelector('button[type="submit"]');
@@ -23,10 +46,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const petSuperpower = document.getElementById('petSuperpower').value;
 
         try {
+            // Mapear animal a imagen
+            const animalImageMap = {
+                'Perro': 'covig.png',
+                'Gato': 'covisgof.png',
+                'Hámster': '729977444619aa7908610b44d2442b56.jpg'
+            };
+            
             const petData = { 
                 name: petName, 
                 animal: petAnimal, 
-                superpower: petSuperpower
+                superpower: petSuperpower,
+                animalImage: animalImageMap[petAnimal] || 'covig.png'
             };
             
             const response = await fetch(`${API_BASE_URL}/api/pets`, {
