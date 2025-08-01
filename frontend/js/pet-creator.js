@@ -48,9 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // Mapear animal a imagen
             const animalImageMap = {
-                'Perro': 'covig.png',
-                'Gato': 'covisgof.png',
-                'Hámster': '729977444619aa7908610b44d2442b56.jpg'
+                'Perro': 'perro.jpg',
+                'Gato': 'gato.jpg',
+                'Hámster': 'hamster.jpg'
             };
             
             const petData = { 
