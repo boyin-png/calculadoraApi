@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 name: petName, 
                 animal: petAnimal, 
                 superpower: petSuperpower,
-                animalImage: animalImageMap[petAnimal] || 'covig.png'
+                animalImage: animalImageMap[petAnimal] || 'perro.jpg'
             };
             
             const response = await fetch(`${API_BASE_URL}/api/pets`, {

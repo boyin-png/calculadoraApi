@@ -9,6 +9,17 @@ let mascotas = [];
 let mascotaActual = 0;
 let hero = null;
 
+// Sistema de animaciones
+const animationMap = {
+    idle: 'p_idle.mp4',
+    eating_meat: 'p_comiendof.mp4',
+    eating_kibble: 'p_comiendoc.mp4',
+    eating_fish: 'p_comiendop.mp4',
+    sick: 'p_enfermo.mp4',
+    walking: 'p_paseando.mp4',
+    dead: 'fondohab', // Imagen estática de habitación vacía
+};
+
 // Inicialización
 window.addEventListener('DOMContentLoaded', async () => {
     await cargarHeroe();
@@ -79,6 +90,9 @@ async function seleccionarMascota(index) {
         petImg.alt = `${mascota.name} - ${mascota.animal}`;
     }
     
+    // Cargar animación idle por defecto
+    playAnimation('idle');
+    
     // Seleccionar mascota en el backend
     try {
         await fetch(`${API_BASE_URL}/api/game/select/${mascota._id}`, {
@@ -101,6 +115,10 @@ async function cargarEstadoMascota() {
         if (response.ok) {
             const estado = await response.json();
             actualizarBarrasEstado(estado);
+            
+            // Actualizar animación basada en el estado
+            const currentAnimation = getAnimationBasedOnStatus(estado);
+            playAnimation(currentAnimation);
             
             // Mostrar botón de revivir si la mascota está muerta
             if (estado.status === 'dead') {
@@ -205,6 +223,11 @@ function configurarModales() {
 // --- ACCIONES DE MASCOTA ---
 async function accionMascota(endpoint, mensajeExito) {
     try {
+        // Reproducir animación según la acción
+        if (endpoint === 'walk') {
+            playTemporaryAnimation('walking', 5000);
+        }
+        
         const response = await fetch(`${API_BASE_URL}/api/game/${endpoint}`, {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${authToken}` }
@@ -213,6 +236,14 @@ async function accionMascota(endpoint, mensajeExito) {
         if (!response.ok) {
             const error = await response.json();
             throw new Error(error.message || 'Acción fallida');
+        }
+        
+        // Efecto especial para revivir
+        if (endpoint === 'revive') {
+            // Mostrar efecto de transición de revivir
+            setTimeout(() => {
+                playAnimation('idle');
+            }, 1000);
         }
         
         await cargarEstadoMascota();
@@ -237,6 +268,16 @@ async function alimentarMascota(foodName) {
             const error = await response.json();
             throw new Error(error.message || 'No se pudo alimentar');
         }
+        
+        // Reproducir animación de comer según el tipo de comida
+        let eatingAnimation = 'eating_kibble'; // Por defecto
+        if (foodName.toLowerCase().includes('carne') || foodName.toLowerCase().includes('filete')) {
+            eatingAnimation = 'eating_meat';
+        } else if (foodName.toLowerCase().includes('pescado') || foodName.toLowerCase().includes('pollo')) {
+            eatingAnimation = 'eating_fish';
+        }
+        
+        playTemporaryAnimation(eatingAnimation, 4000);
         
         await cargarEstadoMascota();
         cerrarModal();
@@ -455,4 +496,58 @@ function mostrarMensaje(mensaje, tipo) {
     setTimeout(() => {
         messageDiv.remove();
     }, 3000);
+}
+
+// === SISTEMA DE ANIMACIONES ===
+function playAnimation(animationType) {
+    const video = document.getElementById('pet-animation');
+    const fallbackImg = document.getElementById('pet-image');
+    const animationFile = animationMap[animationType] || animationMap.idle;
+    
+    // Si es la animación de muerte, mostrar imagen estática
+    if (animationType === 'dead') {
+        video.style.display = 'none';
+        fallbackImg.style.display = 'block';
+        fallbackImg.src = `images/${animationFile}.png`; // Cambiar si tu archivo tiene otra extensión
+        fallbackImg.alt = 'Habitación vacía';
+        return;
+    }
+    
+    // Para animaciones normales, mostrar video
+    video.style.display = 'block';
+    fallbackImg.style.display = 'none';
+    
+    if (video && video.src !== `anim/${animationFile}`) {
+        video.src = `anim/${animationFile}`;
+        video.load();
+        video.play().catch(err => {
+            console.log('Error reproduciendo video:', err);
+        });
+    }
+}
+
+function playTemporaryAnimation(animationType, duration = 3000) {
+    playAnimation(animationType);
+    
+    // Volver a idle después del tiempo especificado
+    setTimeout(() => {
+        playAnimation('idle');
+    }, duration);
+}
+
+function getAnimationBasedOnStatus(petStatus) {
+    if (!petStatus) return 'idle';
+    
+    // Detectar muerte de múltiples formas
+    if (petStatus.hp <= 0 || 
+        petStatus.status === 'dead' || 
+        (petStatus.status && petStatus.status.includes('Muerto'))) {
+        return 'dead';
+    }
+    
+    // Detectar enfermedad
+    if (petStatus.status && petStatus.status.includes('Enfermo')) return 'sick';
+    if (petStatus.health < 30) return 'sick';
+    
+    return 'idle';
 }

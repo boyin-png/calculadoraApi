@@ -76,8 +76,14 @@
         <div id="pet-room" class="pet-room">
             <!-- Mascota en el centro -->
             <div class="pet-environment">
-                <img id="pet-image" src="images/pet_blue.png" alt="Mascota" class="pet-main-img">
-                <div id="pet-accessories" class="pet-accessories"></div>
+                <div class="pet-animation-frame">
+                    <video id="pet-animation" class="pet-animation" loop muted autoplay playsinline>
+                        <source src="anim/p_idle.mp4" type="video/mp4">
+                    </video>
+                    <!-- Imagen de fallback para habitación vacía -->
+                    <img id="pet-image" src="images/perro.jpg" alt="Mascota" class="pet-fallback-img">
+                    <div id="pet-accessories" class="pet-accessories"></div>
+                </div>
             </div>
             
             <!-- Información de la mascota -->
