@@ -295,12 +295,12 @@ body.register-page, body.game-page {
 /* CORRECCIÓN: Contenedor principal para la página del juego */
 .game-container {
     width: 100%;
-    max-width: 700px; /* Reducido para una interfaz más compacta */
+    max-width: 600px; /* Aún más compacto */
     margin: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem; /* Añadido para dar un poco de espacio */
+    padding: 1rem;
 }
 
 .game-header {

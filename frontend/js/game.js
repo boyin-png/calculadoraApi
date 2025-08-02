@@ -233,33 +233,38 @@ function configurarModales() {
 // --- ACCIONES DE MASCOTA ---
 async function accionMascota(endpoint, mensajeExito) {
     try {
-        // Reproducir animación según la acción
-        if (endpoint === 'walk') {
-            playTemporaryAnimation('walking', 6000);
-        }
-        
         const response = await fetch(`${API_BASE_URL}/api/game/${endpoint}`, {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${authToken}` }
         });
-        
+
         if (!response.ok) {
             const error = await response.json();
             throw new Error(error.message || 'Acción fallida');
         }
-        
-        // Efecto especial para revivir
-        if (endpoint === 'revive') {
-            // Mostrar efecto de transición de revivir
-            setTimeout(() => {
-                playAnimation('idle');
-            }, 1000);
+
+        // Una vez la acción es exitosa, reproducimos la animación
+        if (endpoint === 'walk') {
+            playTemporaryAnimation('walking', 6000, () => {
+                cargarEstadoMascota();
+                mostrarMensaje(mensajeExito, 'success');
+            });
+        } else if (endpoint === 'revive') {
+            // Animación especial o efecto para revivir
+            playTemporaryAnimation('idle', 1000, () => { // Usamos idle como placeholder
+                cargarEstadoMascota();
+                mostrarMensaje(mensajeExito, 'success');
+            });
+        } else {
+            // Para otras acciones sin animación, solo actualizamos estado
+            await cargarEstadoMascota();
+            mostrarMensaje(mensajeExito, 'success');
         }
-        
-        await cargarEstadoMascota();
-        mostrarMensaje(mensajeExito, 'success');
+
     } catch (err) {
         mostrarMensaje(err.message, 'error');
+        // Si la acción falla, recargamos el estado para no dejar la UI inconsistente
+        await cargarEstadoMascota();
     }
 }
 
@@ -279,21 +284,23 @@ async function alimentarMascota(foodName) {
             throw new Error(error.message || 'No se pudo alimentar');
         }
         
-        // Reproducir animación de comer según el tipo de comida
-        let eatingAnimation = 'eating_kibble'; // Por defecto
+        cerrarModal();
+        
+        let eatingAnimation = 'eating_kibble'; // Animación por defecto
         if (foodName.toLowerCase().includes('carne') || foodName.toLowerCase().includes('filete')) {
             eatingAnimation = 'eating_meat';
-        } else if (foodName.toLowerCase().includes('pescado') || foodName.toLowerCase().includes('pollo')) {
+        } else if (foodName.toLowerCase().includes('pescado')) {
             eatingAnimation = 'eating_fish';
         }
         
-        playTemporaryAnimation(eatingAnimation, 5000);
-        
-        await cargarEstadoMascota();
-        cerrarModal();
-        mostrarMensaje(`¡Tu mascota disfrutó ${foodName}!`, 'success');
+        playTemporaryAnimation(eatingAnimation, 5000, () => {
+            cargarEstadoMascota();
+            mostrarMensaje(`¡Tu mascota disfrutó ${foodName}!`, 'success');
+        });
+
     } catch (err) {
         mostrarMensaje(err.message, 'error');
+        await cargarEstadoMascota();
     }
 }
 
@@ -565,36 +572,25 @@ function keepIdlePlaying() {
     }
 }
 
-function playTemporaryAnimation(animationType, duration = 3000) {
+function playTemporaryAnimation(animationType, duration = 3000, onCompleteCallback) {
     playAnimation(animationType);
     
-    // Añadir efecto visual durante la animación
     const frame = document.querySelector('.pet-animation-frame');
     if (frame) {
         frame.style.boxShadow = '0 0 20px rgba(168, 230, 207, 0.8), 0 4px 20px rgba(0, 0, 0, 0.1)';
     }
     
-    // Volver a idle después del tiempo especificado, pero solo si no está muerto
     setTimeout(() => {
-        // Verificar el estado actual antes de volver a idle
-        const video = document.getElementById('pet-animation');
-        const fallbackImg = document.getElementById('pet-image');
-        
-        // Restaurar efecto visual normal
         if (frame) {
             frame.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
         }
         
-        // Solo volver a idle si el video está visible (no está muerto)
-        if (video && video.style.display !== 'none') {
+        // Ejecutar el callback después de la animación
+        if (onCompleteCallback) {
+            onCompleteCallback();
+        } else {
+            // Si no hay callback, simplemente volver a idle
             playAnimation('idle');
-            
-            // Asegurar que idle se mantenga reproduciéndose
-            setTimeout(() => {
-                if (video.style.display !== 'none') {
-                    playAnimation('idle');
-                }
-            }, 1000);
         }
     }, duration);
 }
