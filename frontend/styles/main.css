@@ -12,11 +12,9 @@
 
 body {
     font-family: Arial, sans-serif;
-    overflow: hidden;
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+    overflow-x: hidden; /* Previene el scroll horizontal */
 }
 
 .hidden { display: none !important; }
@@ -26,6 +24,9 @@ body.login-page {
     background: url('../images/fondo.jpg') no-repeat center center fixed;
     background-size: cover;
     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .login-page .main-container { padding: 1rem; }
@@ -42,6 +43,10 @@ body.register-page, body.game-page {
     background-color: var(--color-background-ac);
     color: var(--color-text-dark);
     background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
 }
 
 /* --- ESTILOS COMPARTIDOS PARA FORMULARIOS --- */
@@ -59,10 +64,9 @@ body.register-page, body.game-page {
     backdrop-filter: blur(5px);
 }
 
-/* El login form usa el mismo estilo que el register form */
 #login-form-container {
     max-width: 500px;
-    color: var(--color-text-dark); /* Aseguramos texto oscuro */
+    color: var(--color-text-dark);
 }
 
 .form-panel { flex: 1; min-width: 300px; width: 100%; }
@@ -287,8 +291,19 @@ body.register-page, body.game-page {
     z-index: 100;
 }
 
-/* --- INTERFAZ TIPO POU --- */
+/* --- INTERFAZ TIPO POU (PANTALLA DE JUEGO) --- */
+/* CORRECCIÓN: Contenedor principal para la página del juego */
+.game-container {
+    width: 100%;
+    max-width: 900px; /* Limita el ancho máximo para que no se estire demasiado */
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .game-header {
+    width: 100%;
     background: linear-gradient(145deg, #a8e6cf, #88d8a3);
     color: white;
     padding: 1.5rem 2rem;
@@ -398,93 +413,56 @@ body.register-page, body.game-page {
     cursor: pointer;
 }
 
+/* CORRECCIÓN: Eliminado el fondo degradado de aquí */
 .pet-room {
-    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    background: transparent; /* <-- CAMBIO 1: Eliminado el fondo feo */
     border-radius: 25px;
     padding: 2rem;
     margin-bottom: 1.5rem;
     box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-    max-width: 400px;
-    margin: 2rem auto;
+    width: 100%;
 }
 
+/* CORRECCIÓN: Contenedor del video/mascota ahora es responsivo y horizontal */
 .pet-environment {
-    /* Fondo a cuadros gingham con verde pastel */
-    background-color: #FEFDFB; /* Color crema muy pálido como base */
+    background-color: #FEFDFB;
     background-image: 
-        /* Bandas horizontales */
-        repeating-linear-gradient(
-            to bottom, 
-            #D4E7C5BF 0, /* Verde pastel semi-transparente */
-            #D4E7C5BF 20px, 
-            transparent 20px, 
-            transparent 40px 
-        ),
-        /* Bandas verticales */
-        repeating-linear-gradient(
-            to right, 
-            #D4E7C5BF 0, /* Verde pastel semi-transparente */
-            #D4E7C5BF 20px, 
-            transparent 20px, 
-            transparent 40px 
-        );
-    background-size: 40px 40px; /* Tamaño del patrón repetido */
+        repeating-linear-gradient(to bottom, #D4E7C5BF 0, #D4E7C5BF 20px, transparent 20px, transparent 40px),
+        repeating-linear-gradient(to right, #D4E7C5BF 0, #D4E7C5BF 20px, transparent 20px, transparent 40px);
+    background-size: 40px 40px;
     
-    /* Dimensiones más pequeñas para ver los botones */
-    width: 100%;
-    max-width: 600px;
-    height: 350px;
+    width: 100%; /* Ocupa todo el ancho disponible de su padre (.pet-room) */
+    height: auto; /* La altura se ajustará automáticamente */
+    aspect-ratio: 16 / 9; /* <-- CAMBIO 2: Asegura una proporción horizontal (widescreen) */
     margin: 0 auto 1.5rem;
     
-    /* Marco tipo nube/encaje */
-    border: none;
     border-radius: 15px;
     position: relative;
     overflow: hidden;
-    
-    /* Efecto de sombra suave */
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    
-    /* Padding interno para el contenido */
     padding: 50px 30px;
     box-sizing: border-box;
 }
 
-/* Borde superior de guiones tipo nube */
 .pet-environment::before {
     content: '';
     position: absolute;
-    top: 20px; /* Distancia desde el borde superior del contenedor */
+    top: 20px;
     left: 25px;
     right: 25px;
-    height: 4px; /* Grosor de la línea de guiones */
-    /* Se crea una línea de guiones repitiendo un gradiente */
-    background-image: repeating-linear-gradient(
-        to right, 
-        #BFD8AF, /* Color del guion (verde pastel) */
-        #BFD8AF 15px, /* Longitud del guion */
-        transparent 15px, /* Inicio del espacio */
-        transparent 25px /* Longitud total (guion + espacio) */
-    );
+    height: 4px;
+    background-image: repeating-linear-gradient(to right, #BFD8AF, #BFD8AF 15px, transparent 15px, transparent 25px);
     z-index: 2;
 }
 
-/* Borde inferior de guiones tipo nube */
 .pet-environment::after {
     content: '';
     position: absolute;
-    bottom: 20px; /* Distancia desde el borde inferior */
+    bottom: 20px;
     left: 25px;
     right: 25px;
-    height: 4px; /* Mismo grosor */
-    /* Mismo gradiente para la línea de guiones */
-    background-image: repeating-linear-gradient(
-        to right, 
-        #BFD8AF, 
-        #BFD8AF 15px, 
-        transparent 15px, 
-        transparent 25px 
-    );
+    height: 4px;
+    background-image: repeating-linear-gradient(to right, #BFD8AF, #BFD8AF 15px, transparent 15px, transparent 25px);
     z-index: 2;
 }
 
@@ -492,7 +470,7 @@ body.register-page, body.game-page {
     width: 100%;
     height: 100%;
     position: relative;
-    border-radius: 12px; /* Bordes redondeados para coincidir con el marco */
+    border-radius: 12px;
     overflow: hidden;
     background: transparent;
     border: none;
@@ -501,7 +479,6 @@ body.register-page, body.game-page {
     align-items: center;
     justify-content: center;
     z-index: 3;
-    /* Asegurar que se adapte perfectamente al marco */
     margin: 0;
     padding: 0;
 }
@@ -509,7 +486,7 @@ body.register-page, body.game-page {
 .pet-animation {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Cambiar a cover para que llene todo el espacio */
+    object-fit: cover;
     border-radius: 0;
     transition: all 0.5s ease;
     filter: brightness(1.02) saturate(1.05);
@@ -525,7 +502,7 @@ body.register-page, body.game-page {
 .pet-fallback-img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Cambiar a cover para que llene todo el espacio */
+    object-fit: cover;
     border-radius: 0;
     position: absolute;
     top: 0;
@@ -599,7 +576,8 @@ body.register-page, body.game-page {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
-    max-width: 600px;
+    width: 100%;
+    max-width: 800px; /* Un poco más grande para que quepa bien */
     margin: 0 auto;
     padding: 1rem;
 }
@@ -613,6 +591,7 @@ body.register-page, body.game-page {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center; /* Centra el contenido verticalmente */
     gap: 0.8rem;
     cursor: pointer;
     transition: all 0.1s ease-in-out;
@@ -1173,46 +1152,35 @@ body.dashboard-page {
 @media (max-width: 768px) {
     .creation-container { flex-direction: column; padding: 1.5rem; height: auto; }
     .form-panel, .avatar-panel { min-width: 100%; }
-.character-selection { flex-direction: column; gap: 1rem; }
-.character-option { min-width: 100px; }
-.character-img { width: 60px; height: 60px; }
-.avatar-title { font-size: 1.5rem; }
-.animal-selection { gap: 0.8rem; }
-.animal-option { min-width: 90px; padding: 0.8rem; }
-.animal-img { width: 50px; height: 50px; }
+    .character-selection { flex-direction: column; gap: 1rem; }
+    .character-option { min-width: 100px; }
+    .character-img { width: 60px; height: 60px; }
+    .avatar-title { font-size: 1.5rem; }
+    .animal-selection { gap: 0.8rem; }
+    .animal-option { min-width: 90px; padding: 0.8rem; }
+    .animal-img { width: 50px; height: 50px; }
     .title { font-size: 2rem; }
     
     .game-header { padding: 0.75rem 1rem; }
     .pet-room { padding: 1.5rem; }
-    .pet-environment { 
-        width: 100%; 
-        max-width: 400px; 
-        height: 250px; 
-        margin: 0 auto 1rem;
-        padding: 30px 20px;
-        border: none;
-        border-radius: 12px;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    }
-    .pet-animation-frame { 
-        width: 100%; 
-        height: 100%; 
-    }
     
-    /* Ajustar bordes de guiones para móvil */
-    .pet-environment::before {
+    /* CORRECCIÓN: Ajustes responsivos para el entorno de la mascota */
+    .pet-environment { 
+        padding: 30px 20px;
+        border-radius: 12px;
+    }
+
+    .pet-environment::before,
+    .pet-environment::after {
         top: 15px;
         left: 20px;
         right: 20px;
         height: 3px;
     }
-    
     .pet-environment::after {
         bottom: 15px;
-        left: 20px;
-        right: 20px;
-        height: 3px;
     }
+
     .pet-main-img { width: 120px; height: 120px; }
     .action-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
     .modal-content { padding: 1.5rem; }
@@ -1234,5 +1202,3 @@ body.dashboard-page {
     .stats-grid { grid-template-columns: repeat(3, 1fr); }
     .pets-section, .stats-section { padding: 2rem; }
 }
-
-/* Estilos duplicados eliminados - usar los estilos principales definidos arriba */
