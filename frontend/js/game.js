@@ -25,6 +25,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     await cargarHeroe();
     await cargarMascotas();
     configurarEventos();
+    
+    // Mantener idle reproduciéndose constantemente
+    setInterval(keepIdlePlaying, 10000); // Verificar cada 10 segundos
 });
 
 // --- CARGA DE DATOS ---
@@ -91,7 +94,9 @@ async function seleccionarMascota(index) {
     }
     
     // Cargar animación idle por defecto
-    playAnimation('idle');
+    setTimeout(() => {
+        playAnimation('idle');
+    }, 500); // Pequeño delay para asegurar que se cargue correctamente
     
     // Seleccionar mascota en el backend
     try {
@@ -116,9 +121,14 @@ async function cargarEstadoMascota() {
             const estado = await response.json();
             actualizarBarrasEstado(estado);
             
-            // Actualizar animación basada en el estado
+            // Solo cambiar animación si está enfermo o muerto
             const currentAnimation = getAnimationBasedOnStatus(estado);
-            playAnimation(currentAnimation);
+            if (currentAnimation !== 'idle') {
+                playAnimation(currentAnimation);
+            } else {
+                // Si está saludable, reproducir idle constantemente
+                playAnimation('idle');
+            }
             
             // Mostrar botón de revivir si la mascota está muerta
             if (estado.status === 'dead') {
@@ -526,6 +536,17 @@ function playAnimation(animationType) {
     }
 }
 
+// Función para mantener idle reproduciéndose
+function keepIdlePlaying() {
+    const video = document.getElementById('pet-animation');
+    if (video && video.style.display !== 'none') {
+        // Verificar si el video actual no es idle y no está en una animación temporal
+        if (!video.src.includes('p_idle.mp4')) {
+            playAnimation('idle');
+        }
+    }
+}
+
 function playTemporaryAnimation(animationType, duration = 3000) {
     playAnimation(animationType);
     
@@ -549,6 +570,13 @@ function playTemporaryAnimation(animationType, duration = 3000) {
         // Solo volver a idle si el video está visible (no está muerto)
         if (video && video.style.display !== 'none') {
             playAnimation('idle');
+            
+            // Asegurar que idle se mantenga reproduciéndose
+            setTimeout(() => {
+                if (video.style.display !== 'none') {
+                    playAnimation('idle');
+                }
+            }, 1000);
         }
     }, duration);
 }
@@ -563,9 +591,11 @@ function getAnimationBasedOnStatus(petStatus) {
         return 'dead';
     }
     
-    // Detectar enfermedad
-    if (petStatus.status && petStatus.status.includes('Enfermo')) return 'sick';
-    if (petStatus.health < 30) return 'sick';
+    // Detectar enfermedad grave (solo si está muy enfermo)
+    if (petStatus.status && petStatus.status.includes('Enfermo') && petStatus.health < 20) {
+        return 'sick';
+    }
     
+    // Por defecto, siempre idle para mascotas vivas
     return 'idle';
 }

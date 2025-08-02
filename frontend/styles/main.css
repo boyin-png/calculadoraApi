@@ -403,67 +403,127 @@ body.register-page, body.game-page {
     border-radius: 25px;
     padding: 2rem;
     margin-bottom: 1.5rem;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-    position: relative;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    max-width: 400px;
+    margin: 2rem auto;
 }
 
 .pet-environment {
-    background: linear-gradient(135deg, #e8f5e8, #d4f4d4);
-    border-radius: 25px;
+    /* Marco principal con patrón de cuadros */
+    background: 
+        linear-gradient(45deg, #e8f5e8 25%, transparent 25%),
+        linear-gradient(-45deg, #e8f5e8 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #e8f5e8 75%),
+        linear-gradient(-45deg, transparent 75%, #e8f5e8 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    
+    /* Dimensiones horizontales para videos */
     width: 100%;
-    max-width: 500px;
-    height: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    max-width: 600px;
+    height: 350px;
     margin: 0 auto 1.5rem;
-    border: 6px solid #a8e6cf;
-    box-shadow: 
-        0 0 0 4px rgba(255, 255, 255, 0.9),
-        0 0 0 8px #88d8a3,
-        0 12px 40px rgba(0, 0, 0, 0.15),
-        inset 0 4px 16px rgba(255, 255, 255, 0.3);
+    
+    /* Marco decorativo con bordes de encaje */
+    border: 8px solid #a8e6cf;
+    border-radius: 0;
     position: relative;
     overflow: hidden;
+    
+    /* Efecto de encaje en los bordes */
+    box-shadow: 
+        0 0 0 4px #fff,
+        0 0 0 8px #a8e6cf,
+        0 0 0 12px #fff,
+        0 0 0 16px #a8e6cf,
+        0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Efecto de encaje en las esquinas */
+.pet-environment::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    background: 
+        radial-gradient(circle at 0% 0%, transparent 0, transparent 8px, #a8e6cf 8px, #a8e6cf 10px, transparent 10px),
+        radial-gradient(circle at 100% 0%, transparent 0, transparent 8px, #a8e6cf 8px, #a8e6cf 10px, transparent 10px),
+        radial-gradient(circle at 0% 100%, transparent 0, transparent 8px, #a8e6cf 8px, #a8e6cf 10px, transparent 10px),
+        radial-gradient(circle at 100% 100%, transparent 0, transparent 8px, #a8e6cf 8px, #a8e6cf 10px, transparent 10px);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Efecto de encaje en los bordes laterales */
+.pet-environment::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        repeating-linear-gradient(90deg, transparent, transparent 15px, #a8e6cf 15px, #a8e6cf 16px),
+        repeating-linear-gradient(0deg, transparent, transparent 15px, #a8e6cf 15px, #a8e6cf 16px);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 0;
+    mask: 
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    pointer-events: none;
+    z-index: 1;
 }
 
 .pet-animation-frame {
-    width: 95%;
-    height: 95%;
+    width: 100%;
+    height: 100%;
     position: relative;
-    border-radius: 20px;
+    border-radius: 0;
     overflow: hidden;
-    background: linear-gradient(135deg, #f0fff0, #e6ffe6);
-    border: 3px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
 }
 
 .pet-animation {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    border-radius: 17px;
+    border-radius: 0;
     transition: all 0.5s ease;
-    filter: brightness(1.05) saturate(1.1);
+    filter: brightness(1.02) saturate(1.05);
     background: transparent;
+    z-index: 3;
 }
 
 .pet-animation:hover {
-    transform: scale(1.02);
-    filter: brightness(1.1) saturate(1.15);
+    transform: scale(1.01);
+    filter: brightness(1.05) saturate(1.08);
 }
 
 .pet-fallback-img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    border-radius: 17px;
+    border-radius: 0;
     position: absolute;
     top: 0;
     left: 0;
     display: none;
     transition: opacity 0.5s ease;
     background: transparent;
+    z-index: 3;
 }
 
 .pet-fallback-img.show {
@@ -1116,11 +1176,15 @@ body.dashboard-page {
     .pet-room { padding: 1.5rem; }
     .pet-environment { 
         width: 100%; 
-        max-width: 350px; 
-        height: 280px; 
+        max-width: 400px; 
+        height: 250px; 
         margin: 0 auto 1rem;
+        border: 6px solid #a8e6cf;
     }
-    .pet-animation-frame { width: 92%; height: 92%; }
+    .pet-animation-frame { 
+        width: 100%; 
+        height: 100%; 
+    }
     .pet-main-img { width: 120px; height: 120px; }
     .action-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
     .modal-content { padding: 1.5rem; }
