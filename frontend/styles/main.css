@@ -409,66 +409,67 @@ body.register-page, body.game-page {
 }
 
 .pet-environment {
-    /* Marco principal con patrón de cuadros gingham */
+    /* Patrón de cuadros gingham como en la imagen */
     background: 
         linear-gradient(45deg, #e8f5e8 25%, transparent 25%),
         linear-gradient(-45deg, #e8f5e8 25%, transparent 25%),
         linear-gradient(45deg, transparent 75%, #e8f5e8 75%),
         linear-gradient(-45deg, transparent 75%, #e8f5e8 75%);
-    background-size: 20px 20px;
-    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    background-size: 15px 15px;
+    background-position: 0 0, 0 7.5px, 7.5px -7.5px, -7.5px 0px;
     
-    /* Dimensiones horizontales para videos */
+    /* Dimensiones horizontales más grandes */
     width: 100%;
-    max-width: 600px;
-    height: 350px;
+    max-width: 800px;
+    height: 450px;
     margin: 0 auto 1.5rem;
     
-    /* Marco decorativo con bordes de encaje */
-    border: 12px solid #a8e6cf;
+    /* Marco tipo nube/encaje */
+    border: 15px solid #a8e6cf;
     border-radius: 0;
     position: relative;
     overflow: hidden;
     
-    /* Efecto de encaje en los bordes */
-    box-shadow: 
-        0 0 0 4px #fff,
-        0 0 0 8px #a8e6cf,
-        0 0 0 12px #fff,
-        0 0 0 16px #a8e6cf,
-        0 0 0 20px #a8e6cf,
-        0 8px 32px rgba(0, 0, 0, 0.1);
+    /* Efecto de sombra suave */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-/* Efecto de encaje en las esquinas */
+/* Efecto de encaje tipo nube en los bordes */
 .pet-environment::before {
     content: '';
     position: absolute;
-    top: -6px;
-    left: -6px;
-    right: -6px;
-    bottom: -6px;
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
     background: 
-        radial-gradient(circle at 0% 0%, transparent 0, transparent 12px, #a8e6cf 12px, #a8e6cf 15px, transparent 15px),
-        radial-gradient(circle at 100% 0%, transparent 0, transparent 12px, #a8e6cf 12px, #a8e6cf 15px, transparent 15px),
-        radial-gradient(circle at 0% 100%, transparent 0, transparent 12px, #a8e6cf 12px, #a8e6cf 15px, transparent 15px),
-        radial-gradient(circle at 100% 100%, transparent 0, transparent 12px, #a8e6cf 12px, #a8e6cf 15px, transparent 15px);
+        /* Esquinas tipo nube */
+        radial-gradient(circle at 0% 0%, transparent 0, transparent 25px, #a8e6cf 25px, #a8e6cf 30px, transparent 30px),
+        radial-gradient(circle at 100% 0%, transparent 0, transparent 25px, #a8e6cf 25px, #a8e6cf 30px, transparent 30px),
+        radial-gradient(circle at 0% 100%, transparent 0, transparent 25px, #a8e6cf 25px, #a8e6cf 30px, transparent 30px),
+        radial-gradient(circle at 100% 100%, transparent 0, transparent 25px, #a8e6cf 25px, #a8e6cf 30px, transparent 30px),
+        /* Bordes laterales tipo nube */
+        repeating-linear-gradient(90deg, transparent, transparent 30px, #a8e6cf 30px, #a8e6cf 35px),
+        repeating-linear-gradient(0deg, transparent, transparent 30px, #a8e6cf 30px, #a8e6cf 35px);
+    background-size: 35px 35px;
+    background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
     pointer-events: none;
     z-index: 1;
 }
 
-/* Efecto de encaje en los bordes laterales */
+/* Efecto adicional para el encaje */
 .pet-environment::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
     background: 
-        repeating-linear-gradient(90deg, transparent, transparent 20px, #a8e6cf 20px, #a8e6cf 22px),
-        repeating-linear-gradient(0deg, transparent, transparent 20px, #a8e6cf 20px, #a8e6cf 22px);
-    background-size: 22px 22px;
+        /* Patrón de encaje más fino */
+        repeating-linear-gradient(90deg, transparent, transparent 15px, #a8e6cf 15px, #a8e6cf 18px),
+        repeating-linear-gradient(0deg, transparent, transparent 15px, #a8e6cf 15px, #a8e6cf 18px);
+    background-size: 18px 18px;
     background-position: 0 0, 0 0;
     mask: 
         linear-gradient(#fff 0 0) content-box,
@@ -495,12 +496,15 @@ body.register-page, body.game-page {
     align-items: center;
     justify-content: center;
     z-index: 2;
+    /* Asegurar que se adapte perfectamente al marco */
+    margin: 0;
+    padding: 0;
 }
 
 .pet-animation {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover; /* Cambiar a cover para que llene todo el espacio */
     border-radius: 0;
     transition: all 0.5s ease;
     filter: brightness(1.02) saturate(1.05);
@@ -516,7 +520,7 @@ body.register-page, body.game-page {
 .pet-fallback-img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover; /* Cambiar a cover para que llene todo el espacio */
     border-radius: 0;
     position: absolute;
     top: 0;
@@ -1177,16 +1181,11 @@ body.dashboard-page {
     .pet-room { padding: 1.5rem; }
     .pet-environment { 
         width: 100%; 
-        max-width: 400px; 
-        height: 250px; 
+        max-width: 500px; 
+        height: 300px; 
         margin: 0 auto 1rem;
-        border: 8px solid #a8e6cf;
-        box-shadow: 
-            0 0 0 3px #fff,
-            0 0 0 6px #a8e6cf,
-            0 0 0 9px #fff,
-            0 0 0 12px #a8e6cf,
-            0 4px 16px rgba(0, 0, 0, 0.1);
+        border: 12px solid #a8e6cf;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     }
     .pet-animation-frame { 
         width: 100%; 
