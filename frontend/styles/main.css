@@ -409,7 +409,7 @@ body.register-page, body.game-page {
 }
 
 .pet-environment {
-    /* Marco principal con patrón de cuadros */
+    /* Marco principal con patrón de cuadros gingham */
     background: 
         linear-gradient(45deg, #e8f5e8 25%, transparent 25%),
         linear-gradient(-45deg, #e8f5e8 25%, transparent 25%),
@@ -425,7 +425,7 @@ body.register-page, body.game-page {
     margin: 0 auto 1.5rem;
     
     /* Marco decorativo con bordes de encaje */
-    border: 8px solid #a8e6cf;
+    border: 12px solid #a8e6cf;
     border-radius: 0;
     position: relative;
     overflow: hidden;
@@ -436,6 +436,7 @@ body.register-page, body.game-page {
         0 0 0 8px #a8e6cf,
         0 0 0 12px #fff,
         0 0 0 16px #a8e6cf,
+        0 0 0 20px #a8e6cf,
         0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
@@ -443,15 +444,15 @@ body.register-page, body.game-page {
 .pet-environment::before {
     content: '';
     position: absolute;
-    top: -4px;
-    left: -4px;
-    right: -4px;
-    bottom: -4px;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
     background: 
-        radial-gradient(circle at 0% 0%, transparent 0, transparent 8px, #a8e6cf 8px, #a8e6cf 10px, transparent 10px),
-        radial-gradient(circle at 100% 0%, transparent 0, transparent 8px, #a8e6cf 8px, #a8e6cf 10px, transparent 10px),
-        radial-gradient(circle at 0% 100%, transparent 0, transparent 8px, #a8e6cf 8px, #a8e6cf 10px, transparent 10px),
-        radial-gradient(circle at 100% 100%, transparent 0, transparent 8px, #a8e6cf 8px, #a8e6cf 10px, transparent 10px);
+        radial-gradient(circle at 0% 0%, transparent 0, transparent 12px, #a8e6cf 12px, #a8e6cf 15px, transparent 15px),
+        radial-gradient(circle at 100% 0%, transparent 0, transparent 12px, #a8e6cf 12px, #a8e6cf 15px, transparent 15px),
+        radial-gradient(circle at 0% 100%, transparent 0, transparent 12px, #a8e6cf 12px, #a8e6cf 15px, transparent 15px),
+        radial-gradient(circle at 100% 100%, transparent 0, transparent 12px, #a8e6cf 12px, #a8e6cf 15px, transparent 15px);
     pointer-events: none;
     z-index: 1;
 }
@@ -465,9 +466,9 @@ body.register-page, body.game-page {
     right: 0;
     bottom: 0;
     background: 
-        repeating-linear-gradient(90deg, transparent, transparent 15px, #a8e6cf 15px, #a8e6cf 16px),
-        repeating-linear-gradient(0deg, transparent, transparent 15px, #a8e6cf 15px, #a8e6cf 16px);
-    background-size: 16px 16px;
+        repeating-linear-gradient(90deg, transparent, transparent 20px, #a8e6cf 20px, #a8e6cf 22px),
+        repeating-linear-gradient(0deg, transparent, transparent 20px, #a8e6cf 20px, #a8e6cf 22px);
+    background-size: 22px 22px;
     background-position: 0 0, 0 0;
     mask: 
         linear-gradient(#fff 0 0) content-box,
@@ -1179,7 +1180,13 @@ body.dashboard-page {
         max-width: 400px; 
         height: 250px; 
         margin: 0 auto 1rem;
-        border: 6px solid #a8e6cf;
+        border: 8px solid #a8e6cf;
+        box-shadow: 
+            0 0 0 3px #fff,
+            0 0 0 6px #a8e6cf,
+            0 0 0 9px #fff,
+            0 0 0 12px #a8e6cf,
+            0 4px 16px rgba(0, 0, 0, 0.1);
     }
     .pet-animation-frame { 
         width: 100%; 
@@ -1207,89 +1214,4 @@ body.dashboard-page {
     .pets-section, .stats-section { padding: 2rem; }
 }
 
-.pet-card {
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    padding: 2rem;
-    text-align: center;
-    margin: 2rem auto;
-    max-width: 350px;
-}
-.pet-card img {
-    width: 180px;
-    height: 180px;
-    object-fit: contain;
-    margin-bottom: 1rem;
-}
-.pet-card h2 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-}
-
-.pet-room {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #eaf6ff;
-    border-radius: 30px;
-    padding: 2rem 1rem;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-    max-width: 400px;
-    margin: 2rem auto;
-}
-.pet-environment {
-    background: #d4edda;
-    border-radius: 50%;
-    width: 220px;
-    height: 220px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1rem;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
-}
-.pet-main-img {
-    width: 180px;
-    height: 180px;
-    object-fit: contain;
-}
-.pet-info {
-    text-align: center;
-    margin-bottom: 1rem;
-}
-.pet-actions {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 1rem;
-}
-.action-btn {
-    background: #2E9AFE;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    padding: 0.7rem 1.2rem;
-    font-size: 1rem;
-    font-family: var(--font-main);
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 2px 0 #0077E0;
-    transition: background 0.2s;
-}
-.action-btn:hover {
-    background: #0077E0;
-}
-.logout-btn {
-    margin-top: 1rem;
-    background: #ff4d4d;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    padding: 0.7rem 1.2rem;
-    font-size: 1rem;
-    font-family: var(--font-main);
-    font-weight: bold;
-    cursor: pointer;
-}
+/* Estilos duplicados eliminados - usar los estilos principales definidos arriba */
