@@ -527,11 +527,28 @@ function playAnimation(animationType) {
     video.style.display = 'block';
     fallbackImg.style.display = 'none';
     
-    if (video && video.src !== `anim/${animationFile}`) {
-        video.src = `anim/${animationFile}`;
+    // Asegurar que el video siempre se actualice y reproduzca
+    if (video) {
+        const newSrc = `anim/${animationFile}`;
+        console.log('Intentando reproducir:', newSrc); // Debug
+        
+        video.src = newSrc;
         video.load();
-        video.play().catch(err => {
-            console.log('Error reproduciendo video:', err);
+        
+        // Intentar reproducir con manejo de errores más detallado
+        video.play().then(() => {
+            console.log('Video reproduciéndose:', animationType);
+        }).catch(err => {
+            console.error('Error reproduciendo video:', err);
+            console.error('Ruta del video:', newSrc);
+            
+            // Fallback: mostrar imagen estática si el video falla
+            video.style.display = 'none';
+            fallbackImg.style.display = 'block';
+            const mascotaActiva = mascotas[mascotaActual];
+            if (mascotaActiva && mascotaActiva.animalImage) {
+                fallbackImg.src = `images/${mascotaActiva.animalImage}`;
+            }
         });
     }
 }
@@ -540,8 +557,9 @@ function playAnimation(animationType) {
 function keepIdlePlaying() {
     const video = document.getElementById('pet-animation');
     if (video && video.style.display !== 'none') {
-        // Verificar si el video actual no es idle y no está en una animación temporal
-        if (!video.src.includes('p_idle.mp4')) {
+        // Verificar si el video actual no es idle o si está pausado
+        if (!video.src.includes('p_idle.mp4') || video.paused) {
+            console.log('Reactivando idle animation');
             playAnimation('idle');
         }
     }
