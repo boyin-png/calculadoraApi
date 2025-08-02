@@ -320,11 +320,16 @@ async function darMedicina(treatment) {
             throw new Error(error.message || 'No se pudo dar medicina');
         }
         
-        await cargarEstadoMascota();
         cerrarModal();
-        mostrarMensaje(`¡Tu mascota se siente mejor con ${treatment}!`, 'success');
+        
+        // Reproducir animación de curación (usar idle como placeholder)
+        playTemporaryAnimation('idle', 3000, () => {
+            cargarEstadoMascota();
+            mostrarMensaje(`¡Tu mascota se siente mejor con ${treatment}!`, 'success');
+        });
     } catch (err) {
         mostrarMensaje(err.message, 'error');
+        await cargarEstadoMascota();
     }
 }
 
@@ -344,11 +349,16 @@ async function equiparAccesorio(accessoryName) {
             throw new Error(error.message || 'No se pudo equipar');
         }
         
-        await cargarEstadoMascota();
         cerrarModal();
-        mostrarMensaje(`¡Tu mascota luce genial con ${accessoryName}!`, 'success');
+        
+        // Reproducir animación de equipamiento (usar idle como placeholder)
+        playTemporaryAnimation('idle', 2000, () => {
+            cargarEstadoMascota();
+            mostrarMensaje(`¡Tu mascota luce genial con ${accessoryName}!`, 'success');
+        });
     } catch (err) {
         mostrarMensaje(err.message, 'error');
+        await cargarEstadoMascota();
     }
 }
 
@@ -563,10 +573,13 @@ function playAnimation(animationType) {
 // Función para mantener idle reproduciéndose
 function keepIdlePlaying() {
     const video = document.getElementById('pet-animation');
-    if (video && video.style.display !== 'none') {
-        // Verificar si el video actual no es idle o si está pausado
-        if (!video.src.includes('p_idle.mp4') || video.paused) {
-            console.log('Reactivando idle animation');
+    const fallbackImg = document.getElementById('pet-image');
+    
+    // Solo mantener idle si el pet está vivo y el video está visible
+    if (video && video.style.display !== 'none' && fallbackImg.style.display === 'none') {
+        // Verificar si el video está pausado o no está reproduciendo idle
+        if (video.paused || !video.src.includes('p_idle.mp4')) {
+            console.log('🔄 Restaurando animación idle...');
             playAnimation('idle');
         }
     }
@@ -589,8 +602,12 @@ function playTemporaryAnimation(animationType, duration = 3000, onCompleteCallba
         if (onCompleteCallback) {
             onCompleteCallback();
         } else {
-            // Si no hay callback, simplemente volver a idle
-            playAnimation('idle');
+            // Si no hay callback, verificar si el pet está vivo y volver a idle
+            const video = document.getElementById('pet-animation');
+            const fallbackImg = document.getElementById('pet-image');
+            if (video && video.style.display !== 'none' && fallbackImg.style.display === 'none') {
+                playAnimation('idle');
+            }
         }
     }, duration);
 }
