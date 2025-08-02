@@ -11,7 +11,7 @@ let hero = null;
 
 // Sistema de animaciones
 const animationMap = {
-    idle: 'p_idle.mp4',
+    idle: 'p_idle.mp4', // <-- Asegúrate que este nombre es el correcto
     eating_meat: 'p_comiendof.mp4',
     eating_kibble: 'p_comiendoc.mp4',
     eating_fish: 'p_comiendop.mp4',
