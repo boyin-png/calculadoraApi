@@ -409,78 +409,83 @@ body.register-page, body.game-page {
 }
 
 .pet-environment {
-    /* Patrón de cuadros gingham como en la imagen */
-    background: 
-        linear-gradient(45deg, #e8f5e8 25%, transparent 25%),
-        linear-gradient(-45deg, #e8f5e8 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, #e8f5e8 75%),
-        linear-gradient(-45deg, transparent 75%, #e8f5e8 75%);
-    background-size: 15px 15px;
-    background-position: 0 0, 0 7.5px, 7.5px -7.5px, -7.5px 0px;
+    /* Fondo a cuadros gingham con verde pastel */
+    background-color: #FEFDFB; /* Color crema muy pálido como base */
+    background-image: 
+        /* Bandas horizontales */
+        repeating-linear-gradient(
+            to bottom, 
+            #D4E7C5BF 0, /* Verde pastel semi-transparente */
+            #D4E7C5BF 20px, 
+            transparent 20px, 
+            transparent 40px 
+        ),
+        /* Bandas verticales */
+        repeating-linear-gradient(
+            to right, 
+            #D4E7C5BF 0, /* Verde pastel semi-transparente */
+            #D4E7C5BF 20px, 
+            transparent 20px, 
+            transparent 40px 
+        );
+    background-size: 40px 40px; /* Tamaño del patrón repetido */
     
     /* Dimensiones horizontales más grandes */
     width: 100%;
-    max-width: 800px;
-    height: 450px;
+    max-width: 700px;
+    height: 400px;
     margin: 0 auto 1.5rem;
     
     /* Marco tipo nube/encaje */
-    border: 15px solid #a8e6cf;
-    border-radius: 0;
+    border: none;
+    border-radius: 15px;
     position: relative;
     overflow: hidden;
     
     /* Efecto de sombra suave */
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    
+    /* Padding interno para el contenido */
+    padding: 50px 30px;
+    box-sizing: border-box;
 }
 
-/* Efecto de encaje tipo nube en los bordes */
+/* Borde superior de guiones tipo nube */
 .pet-environment::before {
     content: '';
     position: absolute;
-    top: -15px;
-    left: -15px;
-    right: -15px;
-    bottom: -15px;
-    background: 
-        /* Esquinas tipo nube */
-        radial-gradient(circle at 0% 0%, transparent 0, transparent 25px, #a8e6cf 25px, #a8e6cf 30px, transparent 30px),
-        radial-gradient(circle at 100% 0%, transparent 0, transparent 25px, #a8e6cf 25px, #a8e6cf 30px, transparent 30px),
-        radial-gradient(circle at 0% 100%, transparent 0, transparent 25px, #a8e6cf 25px, #a8e6cf 30px, transparent 30px),
-        radial-gradient(circle at 100% 100%, transparent 0, transparent 25px, #a8e6cf 25px, #a8e6cf 30px, transparent 30px),
-        /* Bordes laterales tipo nube */
-        repeating-linear-gradient(90deg, transparent, transparent 30px, #a8e6cf 30px, #a8e6cf 35px),
-        repeating-linear-gradient(0deg, transparent, transparent 30px, #a8e6cf 30px, #a8e6cf 35px);
-    background-size: 35px 35px;
-    background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
-    pointer-events: none;
-    z-index: 1;
+    top: 20px; /* Distancia desde el borde superior del contenedor */
+    left: 25px;
+    right: 25px;
+    height: 4px; /* Grosor de la línea de guiones */
+    /* Se crea una línea de guiones repitiendo un gradiente */
+    background-image: repeating-linear-gradient(
+        to right, 
+        #BFD8AF, /* Color del guion (verde pastel) */
+        #BFD8AF 15px, /* Longitud del guion */
+        transparent 15px, /* Inicio del espacio */
+        transparent 25px /* Longitud total (guion + espacio) */
+    );
+    z-index: 2;
 }
 
-/* Efecto adicional para el encaje */
+/* Borde inferior de guiones tipo nube */
 .pet-environment::after {
     content: '';
     position: absolute;
-    top: -8px;
-    left: -8px;
-    right: -8px;
-    bottom: -8px;
-    background: 
-        /* Patrón de encaje más fino */
-        repeating-linear-gradient(90deg, transparent, transparent 15px, #a8e6cf 15px, #a8e6cf 18px),
-        repeating-linear-gradient(0deg, transparent, transparent 15px, #a8e6cf 15px, #a8e6cf 18px);
-    background-size: 18px 18px;
-    background-position: 0 0, 0 0;
-    mask: 
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    -webkit-mask: 
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    pointer-events: none;
-    z-index: 1;
+    bottom: 20px; /* Distancia desde el borde inferior */
+    left: 25px;
+    right: 25px;
+    height: 4px; /* Mismo grosor */
+    /* Mismo gradiente para la línea de guiones */
+    background-image: repeating-linear-gradient(
+        to right, 
+        #BFD8AF, 
+        #BFD8AF 15px, 
+        transparent 15px, 
+        transparent 25px 
+    );
+    z-index: 2;
 }
 
 .pet-animation-frame {
@@ -489,13 +494,13 @@ body.register-page, body.game-page {
     position: relative;
     border-radius: 0;
     overflow: hidden;
-    background: #fff;
+    background: transparent;
     border: none;
     box-shadow: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2;
+    z-index: 3;
     /* Asegurar que se adapte perfectamente al marco */
     margin: 0;
     padding: 0;
@@ -1181,15 +1186,30 @@ body.dashboard-page {
     .pet-room { padding: 1.5rem; }
     .pet-environment { 
         width: 100%; 
-        max-width: 500px; 
-        height: 300px; 
+        max-width: 400px; 
+        height: 250px; 
         margin: 0 auto 1rem;
-        border: 12px solid #a8e6cf;
+        padding: 30px 20px;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     }
     .pet-animation-frame { 
         width: 100%; 
         height: 100%; 
+    }
+    
+    /* Ajustar bordes de guiones para móvil */
+    .pet-environment::before {
+        top: 15px;
+        left: 20px;
+        right: 20px;
+        height: 3px;
+    }
+    
+    .pet-environment::after {
+        bottom: 15px;
+        left: 20px;
+        right: 20px;
+        height: 3px;
     }
     .pet-main-img { width: 120px; height: 120px; }
     .action-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
