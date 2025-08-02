@@ -410,8 +410,9 @@ body.register-page, body.game-page {
 .pet-environment {
     background: linear-gradient(135deg, #e8f5e8, #d4f4d4);
     border-radius: 25px;
-    width: 280px;
-    height: 280px;
+    width: 100%;
+    max-width: 500px;
+    height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -427,8 +428,8 @@ body.register-page, body.game-page {
 }
 
 .pet-animation-frame {
-    width: 90%;
-    height: 90%;
+    width: 95%;
+    height: 95%;
     position: relative;
     border-radius: 20px;
     overflow: hidden;
@@ -440,10 +441,11 @@ body.register-page, body.game-page {
 .pet-animation {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 17px;
     transition: all 0.5s ease;
     filter: brightness(1.05) saturate(1.1);
+    background: transparent;
 }
 
 .pet-animation:hover {
@@ -454,13 +456,14 @@ body.register-page, body.game-page {
 .pet-fallback-img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 17px;
     position: absolute;
     top: 0;
     left: 0;
     display: none;
     transition: opacity 0.5s ease;
+    background: transparent;
 }
 
 .pet-fallback-img.show {
@@ -1111,8 +1114,13 @@ body.dashboard-page {
     
     .game-header { padding: 0.75rem 1rem; }
     .pet-room { padding: 1.5rem; }
-    .pet-environment { width: 200px; height: 200px; }
-    .pet-animation-frame { width: 88%; height: 88%; }
+    .pet-environment { 
+        width: 100%; 
+        max-width: 350px; 
+        height: 280px; 
+        margin: 0 auto 1rem;
+    }
+    .pet-animation-frame { width: 92%; height: 92%; }
     .pet-main-img { width: 120px; height: 120px; }
     .action-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
     .modal-content { padding: 1.5rem; }

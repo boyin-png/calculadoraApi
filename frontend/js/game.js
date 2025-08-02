@@ -225,7 +225,7 @@ async function accionMascota(endpoint, mensajeExito) {
     try {
         // Reproducir animación según la acción
         if (endpoint === 'walk') {
-            playTemporaryAnimation('walking', 5000);
+            playTemporaryAnimation('walking', 6000);
         }
         
         const response = await fetch(`${API_BASE_URL}/api/game/${endpoint}`, {
@@ -277,7 +277,7 @@ async function alimentarMascota(foodName) {
             eatingAnimation = 'eating_fish';
         }
         
-        playTemporaryAnimation(eatingAnimation, 4000);
+        playTemporaryAnimation(eatingAnimation, 5000);
         
         await cargarEstadoMascota();
         cerrarModal();
@@ -529,9 +529,27 @@ function playAnimation(animationType) {
 function playTemporaryAnimation(animationType, duration = 3000) {
     playAnimation(animationType);
     
-    // Volver a idle después del tiempo especificado
+    // Añadir efecto visual durante la animación
+    const frame = document.querySelector('.pet-animation-frame');
+    if (frame) {
+        frame.style.boxShadow = '0 0 20px rgba(168, 230, 207, 0.8), 0 4px 20px rgba(0, 0, 0, 0.1)';
+    }
+    
+    // Volver a idle después del tiempo especificado, pero solo si no está muerto
     setTimeout(() => {
-        playAnimation('idle');
+        // Verificar el estado actual antes de volver a idle
+        const video = document.getElementById('pet-animation');
+        const fallbackImg = document.getElementById('pet-image');
+        
+        // Restaurar efecto visual normal
+        if (frame) {
+            frame.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+        }
+        
+        // Solo volver a idle si el video está visible (no está muerto)
+        if (video && video.style.display !== 'none') {
+            playAnimation('idle');
+        }
     }, duration);
 }
 
